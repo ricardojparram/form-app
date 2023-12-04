@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Button, Text } from 'react-native-paper';
+import { View } from 'react-native';
 
 export const CustomInput = ({ placeholder, default_value = '', icon, style, ...props }) => {
   const [text, setText] = useState(default_value);
@@ -11,10 +12,6 @@ export const CustomInput = ({ placeholder, default_value = '', icon, style, ...p
       mode="outlined"
       value={text}
       onChangeText={text => setText(text)}
-      right={
-        <TextInput.Icon
-          icon={icon}
-        />}
       {...props}
     />
   );
@@ -42,3 +39,12 @@ export const PasswordInput = ({ placeholder, default_value = '', style, ...props
     />
   );
 };
+
+export const AnchorText = ({children, additionalText = '', href, style}) => {
+  return (
+      <Button mode="text" onPress={href} style={style}>
+        <Text className="">{additionalText}</Text>
+        {children}
+      </Button>
+  );
+}
