@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CustomInput, PasswordInput, AnchorText } from '../components/FormInputs';
 
-export default function LogInScreen({ navigation }) {
+export default function PassRecoveryScreen({ navigation }) {
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-theme-background">
       <StatusBar style="auto"/>
@@ -16,33 +16,27 @@ export default function LogInScreen({ navigation }) {
         <Text 
           className="text-[20px] text-theme-primar text-center font-bold mb-[20px]"
         >
-          Iniciar sesión
+          Recuperar contraseña
         </Text>
         <CustomInput
           placeholder="Email"
           autoComplete="email"
           autoCapitalize="none"
         />
-        <PasswordInput 
-          className="mt-[10px]"
-          placeholder="Contraseña"
-          autoComplete="password"
-        />
       </View>
       <AnchorText
-        className="" 
-        href={() => navigation.navigate('SignIn')}
+        className="h-[45px]" 
+        href={() => navigation.navigate('LogIn')}
         // additionalText="No tienes cuenta? "
-
       >
-        ¿No tienes cuenta?
+        ¿Quieres iniciar sesión?
       </AnchorText>
 
       <AnchorText 
-        href={() => navigation.navigate('Recovery')}
+        href={() => navigation.navigate('SignIn')}
         // additionalText="No tienes cuenta? "
       >
-        ¿Olvidaste tu contraseña?
+        ¿No tienes cuenta?
       </AnchorText>
 
     </SafeAreaView>

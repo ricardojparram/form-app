@@ -9,6 +9,7 @@ module.exports = {
           'second' : "#57624a",
           'third' : "#386664",
           'error' : '#ba1a1a',
+          'background': '#fdfdf5'
         },
       }
     },
