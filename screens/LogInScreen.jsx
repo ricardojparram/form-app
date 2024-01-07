@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-paper'
@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 
 export default function LogInScreen({ navigation }) {
 
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, trigger, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     console.log(data);
   }
@@ -32,7 +32,13 @@ export default function LogInScreen({ navigation }) {
           autoCapitalize="none"
           control={control}
           name="email"
-          rules={{required : 'Complete el correo.', pattern: { value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message:'El correo tiene que ser válido'}}}
+          rules={{
+            required : 'Complete el correo.',
+            pattern: { 
+              value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, 
+              message:'El correo tiene que ser válido'
+            }
+          }}
         />
         <PasswordInput 
           className="mt-[10px]"
