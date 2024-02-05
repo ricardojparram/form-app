@@ -1,44 +1,70 @@
-import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
-import { Text } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { CustomInput, PasswordInput, AnchorText } from '../components/FormInputs';
+import { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { View, Image } from "react-native";
+import { Text, Button } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { CustomInput, AnchorText } from "../components/FormInputs";
+import { LogoHeader } from "../components/LogoHeader";
+import { useForm } from "react-hook-form";
 
 export default function PassRecoveryScreen({ navigation }) {
+  const { control, handleSubmit } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-theme-background">
-      <StatusBar style="auto"/>
-      <View>
-        {/*<Image></Image>*/}
-      </View>
-      <View className="py-7 px-5 w-[90%]">
-        <Text 
-          className="text-[20px] text-theme-primar text-center font-bold mb-[20px]"
+    <SafeAreaView className="bg-theme-background h-[100%]">
+      <StatusBar style="auto" />
+      <LogoHeader />
+
+      <View className="flex-1 items-center  w-[100vw]">
+        <View className="px-5 w-[90%]">
+          <Text className="text-[20px] text-theme-primar text-center font-bold mb-[20px]">
+            Recuperar contraseña
+          </Text>
+          {/* <CustomInput */}
+          {/*   placeholder="Email" */}
+          {/*   autoComplete="email" */}
+          {/*   autoCapitalize="none" */}
+          {/* /> */}
+          <CustomInput
+            placeholder="Email"
+            autoComplete="email"
+            autoCapitalize="none"
+            control={control}
+            name="email"
+            rules={{
+              required: "Complete el correo.",
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                message: "El correo tiene que ser válido",
+              },
+            }}
+          />
+          <Button
+            className="w-[80%] m-auto mt-4"
+            mode="contained"
+            onPress={handleSubmit(onSubmit)}
+          >
+            Recuperar contraseña
+          </Button>
+        </View>
+        <AnchorText
+          className="h-[45px]"
+          href={() => navigation.navigate("LogIn")}
+          // additionalText="No tienes cuenta? "
         >
-          Recuperar contraseña
-        </Text>
-        <CustomInput
-          placeholder="Email"
-          autoComplete="email"
-          autoCapitalize="none"
-        />
+          ¿Quieres iniciar sesión?
+        </AnchorText>
+
+        <AnchorText
+          href={() => navigation.navigate("SignIn")}
+          // additionalText="No tienes cuenta? "
+        >
+          ¿No tienes cuenta?
+        </AnchorText>
       </View>
-      <AnchorText
-        className="h-[45px]" 
-        href={() => navigation.navigate('LogIn')}
-        // additionalText="No tienes cuenta? "
-      >
-        ¿Quieres iniciar sesión?
-      </AnchorText>
-
-      <AnchorText 
-        href={() => navigation.navigate('SignIn')}
-        // additionalText="No tienes cuenta? "
-      >
-        ¿No tienes cuenta?
-      </AnchorText>
-
     </SafeAreaView>
   );
 }
