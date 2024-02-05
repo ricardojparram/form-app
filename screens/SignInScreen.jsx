@@ -33,102 +33,107 @@ export default function SignInScreen({ navigation }) {
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
       >
-        <View className="flex-1 items-center ">
+        <View className="flex-1 items-center justify-center">
           <View className="px-5 w-[90%]">
             <Text className="text-[20px] text-theme-primar text-center font-bold mb-[20px]">
               Registrarse
             </Text>
 
-            <View className="flex gap-2">
-              <View className="">
-                <CustomInput
-                  // className="w-[48%]"
-                  placeholder="Nombre"
-                  autoComplete="name"
-                  control={control}
-                  name="name"
-                  rules={{
-                    required: "Complete el nombre.",
-                    pattern: {
-                      value: /^[a-zA-ZÀ-ÿ]{2,30}$/,
-                      message: "Nombre inválido.",
-                    },
-                  }}
-                />
+            <CustomInput
+              placeholder="Nombre"
+              autoComplete="name"
+              control={control}
+              name="name"
+              rules={{
+                required: "Complete el nombre.",
+                pattern: {
+                  value: /^[a-zA-ZÀ-ÿ]{2,30}$/,
+                  message: "Nombre inválido.",
+                },
+              }}
+            />
 
-                <CustomInput
-                  // className="w-[49%]"
-                  placeholder="Apellido"
-                  autoComplete="family-name"
-                  control={control}
-                  name="lastname"
-                  rules={{
-                    required: "Complete el apellido.",
-                    pattern: {
-                      value: /^[a-zA-ZÀ-ÿ]{2,30}$/,
-                      message: "Apellido inválido.",
-                    },
-                  }}
-                />
-              </View>
+            <CustomInput
+              placeholder="Apellido"
+              autoComplete="family-name"
+              control={control}
+              name="lastname"
+              rules={{
+                required: "Complete el apellido.",
+                pattern: {
+                  value: /^[a-zA-ZÀ-ÿ]{2,30}$/,
+                  message: "Apellido inválido.",
+                },
+              }}
+            />
+            <CustomInput
+              placeholder="Cédula"
+              control={control}
+              name="cedula"
+              rules={{
+                required: "Complete la cédula.",
+                pattern: {
+                  value: /^[0-9]{7,8}$/,
+                  message: "Cédula inválida.",
+                },
+              }}
+            />
 
-              <CustomInput
-                placeholder="Email"
-                autoComplete="email"
-                autoCapitalize="none"
-                control={control}
-                name="email"
-                rules={{
-                  required: "Complete el correo.",
-                  pattern: {
-                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                    message: "El correo tiene que ser válido",
-                  },
-                }}
-              />
+            <CustomInput
+              placeholder="Email"
+              autoComplete="email"
+              autoCapitalize="none"
+              control={control}
+              name="email"
+              rules={{
+                required: "Complete el correo.",
+                pattern: {
+                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                  message: "El correo tiene que ser válido",
+                },
+              }}
+            />
 
-              <PasswordInput
-                control={control}
-                name="password"
-                placeholder="Contraseña"
-                autoComplete="password"
-                rules={{
-                  required: "Complete la contraseña.",
-                  minLength: {
-                    value: 5,
-                    message: "La contraseña debe tener mínimo 5 carácteres.",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "La contraseña no puede pasar de los 20 carácteres.",
-                  },
-                }}
-              />
+            <PasswordInput
+              control={control}
+              name="password"
+              placeholder="Contraseña"
+              autoComplete="password"
+              rules={{
+                required: "Complete la contraseña.",
+                minLength: {
+                  value: 5,
+                  message: "La contraseña debe tener mínimo 5 carácteres.",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "La contraseña no puede pasar de los 20 carácteres.",
+                },
+              }}
+            />
 
-              <PasswordInput
-                placeholder="Confirmar contraseña"
-                autoComplete="password"
-                control={control}
-                name="confirmPassword"
-                placeholder="Contraseña"
-                autoComplete="password"
-                rules={{
-                  required: "Confirme la contraseña.",
-                  validate: (value) =>
-                    value === currentPassword ||
-                    "Las contraseñas tienen que coincidir.",
-                }}
-              />
-            </View>
-            <Button
-              className="w-[50%] m-auto mt-4"
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-            >
-              Registrarse
-            </Button>
+            <PasswordInput
+              placeholder="Confirmar contraseña"
+              autoComplete="password"
+              control={control}
+              name="confirmPassword"
+              placeholder="Contraseña"
+              autoComplete="password"
+              rules={{
+                required: "Confirme la contraseña.",
+                validate: (value) =>
+                  value === currentPassword ||
+                  "Las contraseñas tienen que coincidir.",
+              }}
+            />
           </View>
+          <Button
+            className="w-[50%] m-auto mt-4"
+            mode="contained"
+            onPress={handleSubmit(onSubmit)}
+          >
+            Registrarse
+          </Button>
           <AnchorText
             href={() => navigation.navigate("LogIn")}
             // additionalText="No tienes cuenta? "
