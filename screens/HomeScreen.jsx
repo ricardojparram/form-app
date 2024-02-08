@@ -19,7 +19,7 @@ export default function HomeScreen({ navigation }) {
       </AnchorText>
 
       <AnchorText href={() => navigation.navigate("Profile")}>
-        Ir a Prefil de Usuario
+        Ir a Perfil de Usuario
       </AnchorText>
     </SafeAreaView>
   );

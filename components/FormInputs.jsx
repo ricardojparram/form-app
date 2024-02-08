@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { Controller } from 'react-hook-form';
 
 export const CustomInput = ({ rules, control, name, placeholder, default_value = '', style, ...props }) => {
-	const [text, setText] = useState(default_value);
 	return (
 
 		<Controller 
@@ -12,7 +11,7 @@ export const CustomInput = ({ rules, control, name, placeholder, default_value =
 			name={name}
 			rules={rules}
 			render={({field : { value, onBlur, onChange}, fieldState : { error } }) => (
-				<View>
+					<View>
 					<TextInput
 						{...props}
 						style={style}
@@ -31,7 +30,6 @@ export const CustomInput = ({ rules, control, name, placeholder, default_value =
 };
 
 export const PasswordInput = ({ rules, control, name, placeholder, default_value = '', style, ...props }) => {
-	const [text, setText] = useState(default_value);
 	const [passwordTypeText, setpasswordTypeText] = useState(true);
 
 	return (

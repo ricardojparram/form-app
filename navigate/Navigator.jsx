@@ -5,17 +5,19 @@ import SignInScreen from "../screens/SignInScreen";
 import PassRecoveryScreen from "../screens/PassRecoveryScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import HomeScreen from "../screens/HomeScreen";
+import DashboardScreen from "../screens/DashboardScreen";
 
 const Stack = createNativeStackNavigator();
 export default function Navigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
-        // screenOptions={{
-        //   headerShown: false,
-        // }}
+        initialRouteName="Dashboard"
+        screenOptions={{
+          headerShown: false,
+        }}
       >
+        <Stack.Screen name="Dashboard" component={DashboardScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="LogIn" component={LogInScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
