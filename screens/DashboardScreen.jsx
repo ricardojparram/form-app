@@ -25,6 +25,9 @@ export default function DashboardScreen({ navigation }) {
           <Button mode="contained" onPress={()=> navigation.navigate('Profile')}>
               Perfil
           </Button>
+          <Button mode="contained" onPress={()=> navigation.navigate('ChangePassword')}>
+              Cambiar Contraseña
+          </Button>
         </View>
 
       </ImageBackground>

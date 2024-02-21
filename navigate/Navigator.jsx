@@ -4,6 +4,7 @@ import LogInScreen from "../screens/LogInScreen";
 import SignInScreen from "../screens/SignInScreen";
 import PassRecoveryScreen from "../screens/PassRecoveryScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import HomeScreen from "../screens/HomeScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 
@@ -23,6 +24,7 @@ export default function Navigator() {
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="Recovery" component={PassRecoveryScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
