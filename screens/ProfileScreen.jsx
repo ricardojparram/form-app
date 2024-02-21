@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { View, Image, Alert, ScrollView  } from "react-native";
 import { Text, Button, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CustomInput } from "../components/FormInputs";
+import {  AnchorText,CustomInput } from "../components/FormInputs";
 import { useForm } from "react-hook-form";
 import * as ImagePicker from 'expo-image-picker';
 import { LogoHeader } from "../components/LogoHeader";
@@ -114,7 +114,13 @@ export default function ProfileScreen({ navigation }) {
               Guardar Cambios
             </Button>
           </View>
-
+              
+          <AnchorText
+            href={() => navigation.navigate("ChangePassword")}
+            
+          >
+            Cambiar Contraseña
+          </AnchorText>
         </View>
       </ScrollView>
     </SafeAreaView>
