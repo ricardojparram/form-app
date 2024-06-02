@@ -10,7 +10,7 @@ NativeWindStyleSheet.setOutput({
 });
 
 export default function App() {
-  console.log(theme.colors.primary);
+  console.log(theme.colors.secondary);
   return (
     <PaperProvider theme={theme}>
       <Navigator />
