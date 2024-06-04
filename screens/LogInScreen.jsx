@@ -9,11 +9,26 @@ import {
 } from "../components/FormInputs";
 import { LogoHeader } from "../components/LogoHeader";
 import { useForm } from "react-hook-form";
+import { useAuthStore } from "../store/authStore";
+
+// const getSedes = async () => {
+//   const req = await fetch(API_SRC + "?url=sede", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//     },
+//     body: JSON.stringify({
+//       login: "app",
+//     }),
+//   })
+// }
 
 export default function LogInScreen({ navigation }) {
+  const login = useAuthStore((state) => state.login);
   const { control, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("xd");
+    login("1", "V-123123123", "123123123");
   };
 
   return (
@@ -74,7 +89,7 @@ export default function LogInScreen({ navigation }) {
         >
           ¿No tienes cuenta?
         </AnchorText>
-
+        <AnchorText></AnchorText>
         <AnchorText
           href={() => navigation.navigate("Recovery")}
           // additionalText="No tienes cuenta? "
