@@ -26,7 +26,7 @@ import { useAuthStore } from "../store/authStore";
 export default function LogInScreen({ navigation }) {
   const login = useAuthStore((state) => state.login);
   const { control, handleSubmit } = useForm();
-  const onSubmit = (data) => {
+  const logIn = (data) => {
     console.log("xd");
     login("1", "V-123123123", "123123123");
   };
@@ -42,16 +42,15 @@ export default function LogInScreen({ navigation }) {
           </Text>
 
           <CustomInput
-            placeholder="Email"
-            autoComplete="email"
+            placeholder="Cédula"
             autoCapitalize="none"
             control={control}
-            name="email"
+            name="cedula"
             rules={{
-              required: "Complete el correo.",
+              required: "Complete la cédula.",
               pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                message: "El correo tiene que ser válido",
+                value: /^[0-9]{7,10}$/,
+                message: "La cédula tiene que ser válida",
               },
             }}
           />
@@ -77,7 +76,7 @@ export default function LogInScreen({ navigation }) {
           <Button
             className="w-[50%] m-auto mt-4"
             mode="contained"
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(logIn)}
           >
             Iniciar sesión
           </Button>
