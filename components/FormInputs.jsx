@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
-import { TextInput, Button, Text } from "react-native-paper";
+import { useState, useCallback } from "react";
+import { TextInput, Button, Text, Dialog, Portal } from "react-native-paper";
 import { Controller, set } from "react-hook-form";
-import { View, FlatList, TouchableOpacity, StatusBar } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 
 export const CustomInput = ({
   rules,
@@ -110,6 +110,7 @@ export const Select = ({
   ...props
 }) => {
   const [show, setShow] = useState(false);
+  const [selectedName, setSelectedName] = useState("");
   const openPicker = useCallback(() => {
     setShow(!show);
   }, [show]);
@@ -121,18 +122,15 @@ export const Select = ({
       rules={rules}
       render={({ field: { value, onChange }, fieldState: { error } }) => (
         <>
-          <View
-            className="flex flex-row justify-around my-5"
-            style={{ top: StatusBar.currentHeight }}
-          >
-            <TouchableOpacity onPress={openPicker} className={`${width} `}>
+          <View>
+            <TouchableOpacity onPress={openPicker} className={`${width} -z-1`}>
               <TextInput
-                label={placeholder}
                 style={style}
+                placeholder={placeholder}
                 editable={false}
                 mode="outlined"
-                value={value}
-                error={error}
+                value={selectedName}
+                error={!!error}
                 right={
                   <TextInput.Icon
                     pointerEvents="none"
@@ -141,33 +139,40 @@ export const Select = ({
                   />
                 }
               />
-              {show ? (
-                <FlatList
-                  className="bg-theme-background border border-theme-primar rounded z-50 w-full mt-[60px] absolute"
-                  style={{
-                    elevation: 5,
-                    zIndex: 50,
-                  }}
-                  data={options}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        onChange(item);
-                        setShow(false);
-                      }}
-                    >
-                      <Text style={{ padding: 8 }}>{item}</Text>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item}
-                />
-              ) : null}
             </TouchableOpacity>
             {error && (
               <Text className="text-theme-error font-bold">
                 {error.message}
               </Text>
             )}
+          </View>
+          <View>
+            <Portal>
+              <Dialog visible={show} onDismiss={() => setShow(false)}>
+                <Dialog.Title className="font-bold">{placeholder}</Dialog.Title>
+                <Dialog.Content>
+                  <FlatList
+                    data={options}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          onChange(item.value);
+                          setSelectedName(item.name);
+                          setShow(false);
+                        }}
+                        className="my-2 "
+                      >
+                        <Text className="text-lg font-bold ">{item.name}</Text>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item.value}
+                  />
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={() => setShow(false)}>Cerrar</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
           </View>
         </>
       )}
