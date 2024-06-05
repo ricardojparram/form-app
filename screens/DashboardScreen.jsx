@@ -2,8 +2,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AnchorText } from "../components/FormInputs";
 import { Text, Button } from "react-native-paper";
 import { Image, View, ImageBackground } from "react-native";
+import { useCheckSession } from "../hooks/useCheckSession";
+import { useAuthStore } from "../store/authStore";
 
 export default function DashboardScreen({ navigation }) {
+  const asd = useAuthStore((state) => state);
+  console.log(asd);
+  useCheckSession();
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white">
       <ImageBackground

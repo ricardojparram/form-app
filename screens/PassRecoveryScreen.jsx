@@ -6,12 +6,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomInput, AnchorText } from "../components/FormInputs";
 import { LogoHeader } from "../components/LogoHeader";
 import { useForm } from "react-hook-form";
+import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function PassRecoveryScreen({ navigation }) {
+  useCheckSession();
+
   const { control, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = (data) => {};
 
   return (
     <SafeAreaView className="bg-theme-background h-[100%]">

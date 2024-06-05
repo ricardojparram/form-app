@@ -5,8 +5,9 @@ import { Text } from "react-native-paper";
 export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView className="flex-1 items-center justify-center gap-5 bg-theme-background">
-      <Text className="text-4xl text-black">Rutas de las vistas: </Text>
-      <AnchorText className="" href={() => navigation.navigate("LogIn")}>
+      <Text className="text-4xl text-black">Admin </Text>
+      {/* <Text className="text-4xl text-black">Rutas de las vistas: </Text> */}
+      {/* <AnchorText className="" href={() => navigation.navigate("LogIn")}>
         Ir a Iniciar Sesión
       </AnchorText>
 
@@ -20,7 +21,7 @@ export default function HomeScreen({ navigation }) {
 
       <AnchorText href={() => navigation.navigate("Profile")}>
         Ir a Perfil de Usuario
-      </AnchorText>
+      </AnchorText> */}
     </SafeAreaView>
   );
 }
