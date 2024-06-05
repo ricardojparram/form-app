@@ -1,14 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { View,ScrollView  } from "react-native";
-import { Text, Button} from "react-native-paper";
+import { View, ScrollView } from "react-native";
+import { Text, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PasswordInput } from "../components/FormInputs";
 import { useForm } from "react-hook-form";
 import { LogoHeader } from "../components/LogoHeader";
+import { useCheckSession } from "../hooks/useCheckSession";
 
-
-export default function ChangePassword(){
-    const {
+export default function ChangePassword() {
+  useCheckSession();
+  const {
     control,
     handleSubmit,
     watch,
@@ -16,11 +17,9 @@ export default function ChangePassword(){
   } = useForm({
     reValidateMode: "onBlur",
   });
-    const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = (data) => {};
   const currentPassword = watch("passwordNew", "");
-  return(
+  return (
     <SafeAreaView className="flex-1 bg-theme-background">
       <StatusBar style="auto" />
       <LogoHeader />
@@ -36,9 +35,7 @@ export default function ChangePassword(){
             </Text>
 
             <View className="flex gap-2">
-              
-
-            <PasswordInput
+              <PasswordInput
                 control={control}
                 name="password"
                 placeholder="Contraseña actual"
@@ -94,7 +91,7 @@ export default function ChangePassword(){
               mode="contained"
               onPress={handleSubmit(onSubmit)}
             >
-              Guardar Cambios 
+              Guardar Cambios
             </Button>
           </View>
         </View>
