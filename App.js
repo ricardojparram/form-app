@@ -5,8 +5,6 @@ import { theme } from "./global/theme";
 import Navigator from "./navigate/Navigator.jsx";
 import { useAuthStore } from "./store/authStore.js";
 export default function App() {
-  const state = useAuthStore((state) => state);
-  console.log(state);
   return (
     <PaperProvider theme={theme}>
       <Navigator />
