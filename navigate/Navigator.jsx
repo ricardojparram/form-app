@@ -7,7 +7,6 @@ import ProfileScreen from "../screens/ProfileScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import HomeScreen from "../screens/HomeScreen";
 import DashboardScreen from "../screens/DashboardScreen";
-import Select from "../screens/SelectScreen";
 
 const Stack = createNativeStackNavigator();
 export default function Navigator() {
@@ -26,7 +25,6 @@ export default function Navigator() {
         <Stack.Screen name="Recovery" component={PassRecoveryScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-        <Stack.Screen name="Select" component={Select} />
       </Stack.Navigator>
     </NavigationContainer>
   );
