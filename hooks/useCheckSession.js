@@ -7,24 +7,33 @@ export const useCheckSession = () => {
   const checkSession = useAuthStore((state) => state.checkSession);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     const checkSessionAsync = async () => {
-      const isValid = await checkSession();
-      setIsAuthenticated(isValid);
+      if (token) {
+        const isValid = await checkSession(token);
+        console.log("isValid:", isValid);
+        setIsAuthenticated(isValid);
+      } else {
+        setIsAuthenticated(false);
+      }
     };
-
     checkSessionAsync();
-  }, [checkSession, setIsAuthenticated]);
+  }, [token]);
 
   useEffect(() => {
-    const currentRoute =
-      navigation.getState().routes[navigation.getState().index].name;
-    if (!isAuthenticated && currentRoute !== "LogIn") {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "LogIn" }],
-      });
-    }
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (!isAuthenticated) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "LogIn" }],
+        });
+      }
+    });
+
+    return unsubscribe;
   }, [isAuthenticated, navigation]);
+
+  return null;
 };
