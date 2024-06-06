@@ -40,31 +40,35 @@ export const useAuthStore = create(
         set({
           token: res.token,
           user: data,
+          isAuthenticated: true,
         });
+        console.log("tokenlogin: " + get().token);
         return true;
       },
 
-      checkSession: async () => {
-        const token = get().token;
+      checkSession: async function (token) {
+        console.log("tokenCheck:" + token);
         if (!token) {
           set({ token: null, user: null, isAuthenticated: false });
           return false;
         }
 
         try {
-          const request = await fetch(API_SRC + "?url=inventario", {
+          const request = await fetch(API_SRC + "?url=sessionCheck", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
 
           const res = await request.json();
-          console.log(res);
-          if (res.resultado === "error") {
-            set({ token: null, user: null });
-            return false;
-          } else {
-            return true;
+
+          switch (res.resultado) {
+            case "error":
+              set({ token: null, user: null });
+              return false;
+            case "ok":
+              set({ isAuthenticated: true });
+              return true;
           }
         } catch (error) {
           console.error("Error checking session:", error);
@@ -82,6 +86,16 @@ export const useAuthStore = create(
     {
       name: "authStore",
       storage: createJSONStorage(() => AsyncStorage),
+      onRehydrateStorage: () => {
+        return (state, error) => {
+          if (error) {
+            console.log("Error al hidratar el store:", error);
+          } else {
+            console.log("Store hidratado correctamente");
+            console.log("Token después de hidratar:", state.token);
+          }
+        };
+      },
     }
   )
 );
