@@ -1,13 +1,15 @@
 import { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../store/authStore";
 
 export const useCheckSession = () => {
   const navigation = useNavigation();
+  const { name: screenName } = useRoute();
   const checkSession = useAuthStore((state) => state.checkSession);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
   const token = useAuthStore((state) => state.token);
+  const notLockedScreens = ["LogIn", "Recovery"];
 
   useEffect(() => {
     const checkSessionAsync = async () => {
@@ -23,16 +25,21 @@ export const useCheckSession = () => {
   }, [token]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    if (!notLockedScreens.includes(screenName)) {
       if (!isAuthenticated) {
         navigation.reset({
           index: 0,
           routes: [{ name: "LogIn" }],
         });
       }
-    });
-
-    return unsubscribe;
+    } else {
+      if (isAuthenticated) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
+      }
+    }
   }, [isAuthenticated, navigation]);
 
   return null;
