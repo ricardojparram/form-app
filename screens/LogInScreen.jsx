@@ -14,8 +14,11 @@ import { useForm } from "react-hook-form";
 import { useAuthStore } from "../store/authStore";
 import { useEffect, useState } from "react";
 import { API_SRC } from "@env";
+import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function LogInScreen({ navigation }) {
+  useCheckSession();
+
   const login = useAuthStore((state) => state.login);
   const { control, handleSubmit } = useForm();
   const [sedes, setSedes] = useState([]);
