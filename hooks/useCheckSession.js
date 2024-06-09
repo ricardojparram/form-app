@@ -5,12 +5,15 @@ import { useAuthStore } from "../store/authStore";
 export const useCheckSession = () => {
   const navigation = useNavigation();
   const { name: screenName } = useRoute();
-  const checkSession = useAuthStore((state) => state.checkSession);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
-  const token = useAuthStore((state) => state.token);
+  const [checkSession, isAuthenticated, setIsAuthenticated, token] =
+    useAuthStore((state) => [
+      state.checkSession,
+      state.isAuthenticated,
+      state.setIsAuthenticated,
+      state.token,
+    ]);
   const notLockedScreens = ["LogIn", "Recovery"];
-
+  console.log(screenName);
   useEffect(() => {
     const checkSessionAsync = async () => {
       if (token) {
@@ -25,21 +28,25 @@ export const useCheckSession = () => {
   }, [token]);
 
   useEffect(() => {
-    if (!notLockedScreens.includes(screenName)) {
-      if (!isAuthenticated) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "LogIn" }],
-        });
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (!notLockedScreens.includes(screenName)) {
+        if (!isAuthenticated) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "LogIn" }],
+          });
+        }
+      } else {
+        if (isAuthenticated) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Dashboard" }],
+          });
+        }
       }
-    } else {
-      if (isAuthenticated) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        });
-      }
-    }
+    });
+
+    return unsubscribe;
   }, [isAuthenticated, navigation]);
 
   return null;
