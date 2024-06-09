@@ -58,13 +58,6 @@ export default function PassRecoveryScreen({ navigation }) {
         >
           ¿Quieres iniciar sesión?
         </AnchorText>
-
-        <AnchorText
-          href={() => navigation.navigate("SignIn")}
-          // additionalText="No tienes cuenta? "
-        >
-          ¿No tienes cuenta?
-        </AnchorText>
       </View>
     </SafeAreaView>
   );

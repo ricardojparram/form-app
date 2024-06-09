@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, ActivityIndicator, MD2Colors } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   CustomInput,
@@ -20,24 +20,32 @@ export default function LogInScreen({ navigation }) {
   useCheckSession();
 
   const login = useAuthStore((state) => state.login);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  console.log(isAuthenticated);
   const { control, handleSubmit } = useForm();
   const [sedes, setSedes] = useState([]);
   const [alert, setAlert] = useState({
+    loading: false,
     visible: false,
-    type: "",
-    message: "",
+    type: "error",
+    message: "error",
   });
 
   const closeAlert = () => {
-    setAlert((state) => ({ ...state, visible: false }));
+    setAlert({ visible: false });
   };
 
   const logIn = async (data) => {
+    setAlert((state) => ({
+      ...state,
+      loading: true,
+    }));
     const res = await login(
       data.sede,
       `${data.acronym}-${data.cedula}`,
       data.password
     );
+
     if (!!res.msg) {
       setAlert((state) => ({
         ...state,
@@ -49,14 +57,17 @@ export default function LogInScreen({ navigation }) {
 
     if (res === true) {
       setAlert((state) => ({
+        ...state,
         visible: true,
         message: "Se ha iniciado sesion",
         type: "success",
       }));
-      setTimeout(() => {
-        navigation.navigate("Home");
-      }, 3000);
+      navigation.navigate("Dashboard", { scree: "Home" });
     }
+    setAlert((state) => ({
+      ...state,
+      loading: false,
+    }));
   };
   const fetchSedes = async () => {
     const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
@@ -147,13 +158,22 @@ export default function LogInScreen({ navigation }) {
             mode="contained"
             onPress={handleSubmit(logIn)}
           >
-            Iniciar sesión
+            {alert.loading ? (
+              <ActivityIndicator
+                animating={alert.loading}
+                color={MD2Colors.red800}
+              />
+            ) : (
+              "Iniciar Sesion"
+            )}
           </Button>
         </View>
-        <AnchorText className="" href={() => navigation.navigate("SignIn")}>
-          ¿No tienes cuenta?
-        </AnchorText>
         <AnchorText href={() => navigation.navigate("Recovery")}>
+          ¿Olvidaste tu contraseña?
+        </AnchorText>
+        <AnchorText
+          href={() => navigation.navigate("Dashboard", { scree: "Home" })}
+        >
           ¿Olvidaste tu contraseña?
         </AnchorText>
       </View>
