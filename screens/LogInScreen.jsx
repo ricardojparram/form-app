@@ -17,13 +17,26 @@ import { API_SRC } from "@env";
 import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function LogInScreen({ navigation }) {
-  useCheckSession();
+  navigation.setOptions({
+    headerShown: false,
+  });
+  const [sedes, setSedes] = useState([]);
+  const fetchSedes = async () => {
+    const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
+    const data = await response.json();
+    const sedes = data.map((row) => {
+      return { value: row.id_sede, name: row.nombre };
+    });
+    setSedes(sedes);
+  };
+  useEffect(() => {
+    fetchSedes();
+  }, []);
 
+  useCheckSession();
   const login = useAuthStore((state) => state.login);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  console.log(isAuthenticated);
   const { control, handleSubmit } = useForm();
-  const [sedes, setSedes] = useState([]);
   const [alert, setAlert] = useState({
     loading: false,
     visible: false,
@@ -69,18 +82,6 @@ export default function LogInScreen({ navigation }) {
       loading: false,
     }));
   };
-  const fetchSedes = async () => {
-    const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
-    const data = await response.json();
-    const sedes = data.map((row) => {
-      return { value: row.id_sede, name: row.nombre };
-    });
-    setSedes(sedes);
-  };
-
-  useEffect(() => {
-    fetchSedes();
-  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-theme-background">
