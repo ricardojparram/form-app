@@ -10,19 +10,13 @@ export const useCheckSession = () => {
       state.checkSession,
       state.isAuthenticated,
       state.setIsAuthenticated,
-      state.token,
     ]);
   const notLockedScreens = ["LogIn", "Recovery"];
   console.log(screenName);
   useEffect(() => {
     const checkSessionAsync = async () => {
-      if (token) {
-        const isValid = await checkSession(token);
-        console.log("isValid:", isValid);
-        setIsAuthenticated(isValid);
-      } else {
-        setIsAuthenticated(false);
-      }
+      const isValid = await checkSession();
+      setIsAuthenticated(isValid);
     };
     checkSessionAsync();
   }, [token]);
