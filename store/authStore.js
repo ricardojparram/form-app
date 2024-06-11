@@ -12,6 +12,7 @@ export const useAuthStore = create(
         token: null,
         user: null,
         isAuthenticated: false,
+        API_SRC: API_SRC,
 
         // setters
         setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
@@ -21,7 +22,7 @@ export const useAuthStore = create(
         //methods
 
         login: async (sede, cedula, password) => {
-          const request = await fetch(API_SRC + "?url=login", {
+          const request = await fetch(get().API_SRC + "?url=login", {
             method: "POST",
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
@@ -43,12 +44,12 @@ export const useAuthStore = create(
             user: data,
             isAuthenticated: true,
           });
-          console.log("tokenlogin: " + get().token);
           return true;
         },
 
-        checkSession: async function (token) {
-          console.log("tokenCheck:" + token);
+        checkSession: async function () {
+          const token = get().token;
+          console.log("CheckSession: " + token);
           if (!token) {
             set({ token: null, user: null, isAuthenticated: false });
             return false;
