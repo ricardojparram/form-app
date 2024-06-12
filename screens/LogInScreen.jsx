@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, Button, ActivityIndicator, MD2Colors } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -50,7 +50,7 @@ export default function LogInScreen({ navigation }) {
   const logIn = async (data) => {
     setAlert((state) => ({
       ...state,
-      loading: true,
+      loading: false,
     }));
     const res = await login(
       data.sede,
@@ -78,106 +78,108 @@ export default function LogInScreen({ navigation }) {
     }
     setAlert((state) => ({
       ...state,
-      loading: false,
+      loading: true,
     }));
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-theme-background">
-      <StatusBar style="auto" />
-      <LogoHeader />
-      <View className="flex-1 items-center ">
-        <View className="px-5 w-[90%]">
-          <Text className="text-[20px] text-theme-primar text-center font-bold mb-[20px]">
-            Iniciar sesión
-          </Text>
+    <ScrollView className="flex-1 bg-theme-background">
+      <SafeAreaView>
+        <StatusBar style="auto" />
+        <LogoHeader />
+        <View className="flex-1 items-center ">
+          <View className="px-5 w-[90%]">
+            <Text className="text-[20px] text-theme-primar text-center font-bold mb-[20px]">
+              Iniciar sesión
+            </Text>
 
-          <Select
-            control={control}
-            placeholder="Sede"
-            name="sede"
-            width="w-full"
-            options={sedes}
-            rules={{
-              required: "El acronimo es requerido",
-            }}
-          />
+            <Select
+              control={control}
+              placeholder="Sede"
+              name="sede"
+              width="w-full"
+              options={sedes}
+              rules={{
+                required: "El acronimo es requerido",
+              }}
+            />
 
-          <Select
-            control={control}
-            className="mt-3 -z-50"
-            placeholder="Nacionalidad"
-            name="acronym"
-            width="w-full"
-            options={[
-              { value: "V", name: "Venezolano" },
-              { value: "E", name: "Extranjero" },
-            ]}
-            rules={{
-              required: "El acronimo es requerido",
-            }}
-          />
+            <Select
+              control={control}
+              className="mt-3 -z-50"
+              placeholder="Nacionalidad"
+              name="acronym"
+              width="w-full"
+              options={[
+                { value: "V", name: "Venezolano" },
+                { value: "E", name: "Extranjero" },
+              ]}
+              rules={{
+                required: "El acronimo es requerido",
+              }}
+            />
 
-          <CustomInput
-            className="mt-3 -z-10"
-            placeholder="Cédula"
-            autoCapitalize="none"
-            control={control}
-            name="cedula"
-            inputMode="numeric"
-            rules={{
-              required: "Complete la cédula.",
-              pattern: {
-                value: /^[0-9]{7,10}$/,
-                message: "La cédula tiene que ser válida",
-              },
-            }}
-          />
+            <CustomInput
+              className="mt-3 -z-10"
+              placeholder="Cédula"
+              autoCapitalize="none"
+              control={control}
+              name="cedula"
+              inputMode="numeric"
+              rules={{
+                required: "Complete la cédula.",
+                pattern: {
+                  value: /^[0-9]{7,10}$/,
+                  message: "La cédula tiene que ser válida",
+                },
+              }}
+            />
 
-          <PasswordInput
-            className="mt-3 -z-10"
-            control={control}
-            name="password"
-            placeholder="Contraseña"
-            autoComplete="password"
-            rules={{
-              required: "Complete la contraseña.",
-              minLength: {
-                value: 5,
-                message: "La contraseña debe tener mínimo 5 carácteres.",
-              },
-              maxLength: {
-                value: 20,
-                message: "La contraseña no puede pasar de los 20 carácteres.",
-              },
-            }}
-          />
+            <PasswordInput
+              className="mt-3 -z-10"
+              control={control}
+              name="password"
+              placeholder="Contraseña"
+              autoComplete="password"
+              rules={{
+                required: "Complete la contraseña.",
+                minLength: {
+                  value: 5,
+                  message: "La contraseña debe tener mínimo 5 carácteres.",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "La contraseña no puede pasar de los 20 carácteres.",
+                },
+              }}
+            />
 
-          <Button
-            className="w-[50%] m-auto mt-4"
-            mode="contained"
-            onPress={handleSubmit(logIn)}
-          >
-            {alert.loading ? (
-              <ActivityIndicator
-                animating={alert.loading}
-                color={MD2Colors.red800}
-              />
-            ) : (
-              "Iniciar Sesion"
-            )}
-          </Button>
+            <Button
+              className="w-[50%] m-auto mt-4"
+              mode="contained"
+              onPress={handleSubmit(logIn)}
+            >
+              {alert.loading ? (
+                <ActivityIndicator
+                  animating={alert.loading}
+                  color={MD2Colors.red800}
+                />
+              ) : (
+                "Iniciar Sesion"
+              )}
+            </Button>
+          </View>
+          <AnchorText href={() => navigation.navigate("Recovery")}>
+            ¿Olvidaste tu contraseña?
+          </AnchorText>
         </View>
-        <AnchorText href={() => navigation.navigate("Recovery")}>
-          ¿Olvidaste tu contraseña?
-        </AnchorText>
-      </View>
-      <Alert
-        type={alert.type}
-        visible={alert.visible}
-        message={alert.message}
-        onClose={closeAlert}
-      />
-    </SafeAreaView>
+        <Alert
+          type={alert.type}
+          visible={alert.visible}
+          message={alert.message}
+          onClose={closeAlert}
+        />
+      </SafeAreaView>
+    </ScrollView>
   );
 }
