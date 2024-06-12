@@ -1,22 +1,29 @@
-import { useState } from "react";
-import { Modal, Portal, Text, Button, PaperProvider } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
+import { Modal, Portal, Surface, Text, Button } from "react-native-paper";
 
-export default function Modal({ visible, title, children }) {
-  const [visible, setVisible] = useState(visible);
-
-  const hideModal = () => setVisible(false);
-  const containerStyle = { backgroundColor: "white", padding: 20 };
-
+const containerStyle = { backgroundColor: "white", padding: 20 };
+export const CustomModal = ({ visible, onDismiss, title, children }) => {
   return (
     <Portal>
       <Modal
+        className="m-4"
         visible={visible}
-        onDismiss={hideModal}
+        onDismiss={onDismiss}
         contentContainerStyle={containerStyle}
       >
-        <Text className="text-3xl text-black">{title}</Text>
-        {children}
+        <ScrollView className="flex gap-4">
+          <Text className="text-2xl text-black">{title}</Text>
+
+          {children}
+        </ScrollView>
+        <Button
+          mode="contained-tonal"
+          className="w-28 ml-auto mt-8"
+          onPress={onDismiss}
+        >
+          Ok
+        </Button>
       </Modal>
     </Portal>
   );
-}
+};
