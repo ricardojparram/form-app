@@ -35,7 +35,6 @@ export default function LogInScreen({ navigation }) {
 
   useCheckSession();
   const login = useAuthStore((state) => state.login);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { control, handleSubmit } = useForm();
   const [alert, setAlert] = useState({
     loading: false,
@@ -75,7 +74,7 @@ export default function LogInScreen({ navigation }) {
         message: "Se ha iniciado sesion",
         type: "success",
       }));
-      navigation.navigate("Dashboard", { scree: "Home" });
+      navigation.navigate("Dashboard", { screen: "Inicio" });
     }
     setAlert((state) => ({
       ...state,
@@ -170,11 +169,6 @@ export default function LogInScreen({ navigation }) {
           </Button>
         </View>
         <AnchorText href={() => navigation.navigate("Recovery")}>
-          ¿Olvidaste tu contraseña?
-        </AnchorText>
-        <AnchorText
-          href={() => navigation.navigate("Dashboard", { scree: "Home" })}
-        >
           ¿Olvidaste tu contraseña?
         </AnchorText>
       </View>

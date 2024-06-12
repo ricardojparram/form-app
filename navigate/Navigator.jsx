@@ -2,11 +2,12 @@ import HomeScreen from "../screens/HomeScreen";
 import LogInScreen from "../screens/LogInScreen";
 import PassRecoveryScreen from "../screens/PassRecoveryScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+import InventoryScreen from "../screens/InventoryScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { useAuthStore } from "../store/authStore";
-
+import { DrawerContent } from "./DrawerContent";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -15,13 +16,19 @@ export const LoggedInNav = () => {
   console.log("isAuthenticated: " + isAuthenticated);
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="Inicio"
       screenOptions={{
         headerShown: { isAuthenticated },
       }}
+      drawerContent={(props) => <DrawerContent {...props} />}
     >
-      <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="LogIn" component={LogInScreen} />
+      <Drawer.Screen name="Inicio" component={HomeScreen} />
+      <Drawer.Screen
+        name="Inventario"
+        component={InventoryScreen}
+        options={{ orientation: "landscape" }}
+      />
     </Drawer.Navigator>
   );
 };
