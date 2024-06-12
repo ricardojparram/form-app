@@ -16,18 +16,21 @@ export const LoggedInNav = () => {
   console.log("isAuthenticated: " + isAuthenticated);
   return (
     <Drawer.Navigator
-      initialRouteName="Inicio"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: { isAuthenticated },
       }}
       drawerContent={(props) => <DrawerContent {...props} />}
     >
-      <Drawer.Screen name="LogIn" component={LogInScreen} />
-      <Drawer.Screen name="Inicio" component={HomeScreen} />
       <Drawer.Screen
-        name="Inventario"
+        name="Home"
+        options={{ title: "Inicio" }}
+        component={HomeScreen}
+      />
+      <Drawer.Screen
+        name="Inventory"
         component={InventoryScreen}
-        options={{ orientation: "landscape" }}
+        options={{ title: "Inventario de productos" }}
       />
     </Drawer.Navigator>
   );
@@ -42,10 +45,26 @@ export const LoginNav = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Dashboard" component={LoggedInNav} />
-        <Stack.Screen name="LogIn" component={LogInScreen} />
-        <Stack.Screen name="Recovery" component={PassRecoveryScreen} />
-        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen
+          name="Dashboard"
+          options={{ title: "Inicio" }}
+          component={LoggedInNav}
+        />
+        <Stack.Screen
+          name="LogIn"
+          options={{ title: "Iniciar sesión" }}
+          component={LogInScreen}
+        />
+        <Stack.Screen
+          name="Recovery"
+          options={{ title: "Recuperar contraseña" }}
+          component={PassRecoveryScreen}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          options={{ title: "Cambiar contraseña" }}
+          component={ChangePasswordScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Title, Caption, Drawer, Text } from "react-native-paper";
 import { useAuthStore } from "../store/authStore";
+import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function DrawerContent({ navigation }, ...props) {
   const [logout, user] = useAuthStore((state) => [state.logout, state.user]);
@@ -12,8 +14,11 @@ export function DrawerContent({ navigation }, ...props) {
   };
 
   return (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.drawerContent}>
+    <SafeAreaView
+      style={{ flex: 1 }}
+      forceInset={{ top: "always", horizontal: "never" }}
+    >
+      <DrawerContentScrollView {...props}>
         <View style={styles.userInfoSection}>
           <Title style={styles.title}>
             {user?.nombre + " " + user?.apellido}
@@ -23,28 +28,32 @@ export function DrawerContent({ navigation }, ...props) {
         </View>
         <Drawer.Section>
           <Drawer.Item
-            icon="logout-variant"
+            icon="account-outline"
             label="Perfil"
             onPress={() => {}}
           />
-          <Drawer.Item label="Cerrar sesion" onPress={handleLogOut} />
         </Drawer.Section>
         <Drawer.Item
-          icon="home"
+          icon="home-outline"
           label="Inicio"
           onPress={() => {
-            navigation.navigate("Inicio");
+            navigation.navigate("Home");
           }}
         />
         <Drawer.Item
-          icon="inbox-multiple"
-          label="Inventario"
+          icon="package-variant-closed"
+          label="Inventario de productos"
           onPress={() => {
-            navigation.navigate("Inventario");
+            navigation.navigate("Inventory");
           }}
         />
-      </View>
-    </DrawerContentScrollView>
+      </DrawerContentScrollView>
+      <Drawer.Item
+        icon="logout-variant"
+        label="Cerrar sesion"
+        onPress={handleLogOut}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -57,7 +66,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   title: {
-    marginTop: 20,
     fontWeight: "bold",
   },
   caption: {
