@@ -74,7 +74,7 @@ export default function LogInScreen({ navigation }) {
         message: "Se ha iniciado sesion",
         type: "success",
       }));
-      navigation.navigate("Dashboard", { screen: "Inicio" });
+      navigation.navigate("Dashboard", { screen: "Home" });
     }
     setAlert((state) => ({
       ...state,
