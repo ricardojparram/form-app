@@ -23,7 +23,6 @@ export default function LogInScreen({ navigation }) {
     navigation.setOptions({
       headerShown: false,
     });
-    fetchPublicKey();
     const fetchSedes = async () => {
       const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
       const data = await response.json();
