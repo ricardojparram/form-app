@@ -1,31 +1,39 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Image, Alert, ScrollView  } from "react-native";
+import { View, Image, Alert, ScrollView } from "react-native";
 import { Text, Button, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {  AnchorText,CustomInput } from "../components/FormInputs";
+import { AnchorText, CustomInput } from "../components/FormInputs";
 import { useForm } from "react-hook-form";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { LogoHeader } from "../components/LogoHeader";
+import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function ProfileScreen({ navigation }) {
+  useCheckSession();
+
   const { control, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  const [selectedImage, setSelectImage] = useState(null)
-  let url = selectedImage == null ? require("../assets/profile_photo.jpg") : { uri: selectedImage.localUri }
-  
-  
-  
+  const onSubmit = (data) => {};
+  const [selectedImage, setSelectImage] = useState(null);
+  let url =
+    selectedImage == null
+      ? require("../assets/profile_photo.jpg")
+      : { uri: selectedImage.localUri };
+
   let imagePermison = async () => {
-    let permisonResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permisonResult.granted === false) {Alert('permisos Requeridos'); return; }
+    let permisonResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permisonResult.granted === false) {
+      Alert("permisos Requeridos");
+      return;
+    }
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.canceled == true) { return }
-    
-    setSelectImage({ localUri: pickerResult.uri })
-  }
+    if (pickerResult.canceled == true) {
+      return;
+    }
+
+    setSelectImage({ localUri: pickerResult.uri });
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-theme-background">
@@ -43,14 +51,12 @@ export default function ProfileScreen({ navigation }) {
         <View className="flex-1 items-center mb-10">
           <View className="px-5 w-[90%]">
             <View className="flex flex-row h-[40vw]">
-
               <IconButton
                 icon="folder"
                 size={50}
                 mode="contained"
                 onPress={() => {
                   imagePermison();
-                  
                 }}
                 className="m-10"
               />
@@ -58,7 +64,6 @@ export default function ProfileScreen({ navigation }) {
                 resizeMode="contain"
                 className="w-[45%] h-[100%]"
                 source={url}
-                
               />
             </View>
             <Text className="text-theme-error font-bold">{}</Text>
@@ -103,22 +108,16 @@ export default function ProfileScreen({ navigation }) {
               }}
             />
 
-
             <Button
               className="w-[70%] m-auto mt-4"
               mode="contained"
-              onPress={
-                handleSubmit(onSubmit)
-              }
+              onPress={handleSubmit(onSubmit)}
             >
               Guardar Cambios
             </Button>
           </View>
-              
-          <AnchorText
-            href={() => navigation.navigate("ChangePassword")}
-            
-          >
+
+          <AnchorText href={() => navigation.navigate("ChangePassword")}>
             Cambiar Contraseña
           </AnchorText>
         </View>
@@ -126,5 +125,3 @@ export default function ProfileScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-

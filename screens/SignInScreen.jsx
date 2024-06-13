@@ -10,7 +10,11 @@ import {
 import { useForm } from "react-hook-form";
 import { LogoHeader } from "../components/LogoHeader";
 import { ScrollView } from "react-native";
+import { useCheckSession } from "../hooks/useCheckSession";
+
 export default function SignInScreen({ navigation }) {
+  useCheckSession();
+
   const {
     control,
     handleSubmit,
@@ -19,10 +23,7 @@ export default function SignInScreen({ navigation }) {
   } = useForm({
     reValidateMode: "onBlur",
   });
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-console.log(control)
+  const onSubmit = (data) => {};
   const currentPassword = watch("password", "");
   return (
     <SafeAreaView className="flex-1 bg-theme-background">
