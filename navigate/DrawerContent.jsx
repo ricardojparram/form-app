@@ -5,6 +5,7 @@ import { Title, Caption, Drawer, Text } from "react-native-paper";
 import { useAuthStore } from "../store/authStore";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 export function DrawerContent({ navigation }, ...props) {
   const [logout, user] = useAuthStore((state) => [state.logout, state.user]);
@@ -18,20 +19,16 @@ export function DrawerContent({ navigation }, ...props) {
       style={{ flex: 1 }}
       forceInset={{ top: "always", horizontal: "never" }}
     >
+      <StatusBar style={{ flex: 1 }} />
       <DrawerContentScrollView {...props}>
-        <View style={styles.userInfoSection}>
-          <Title style={styles.title}>
-            {user?.nombre + " " + user?.apellido}
-          </Title>
-          <Text className="text-lg">{user?.puesto}</Text>
-          <Caption style={styles.caption}>{user?.sede}</Caption>
-        </View>
-        <Drawer.Section>
-          <Drawer.Item
-            icon="account-outline"
-            label="Perfil"
-            onPress={() => {}}
-          />
+        <Drawer.Section className="pb-2">
+          <View style={styles.userInfoSection}>
+            <Title style={styles.title}>
+              {user?.nombre + " " + user?.apellido}
+            </Title>
+            <Text className="text-lg">{user?.puesto}</Text>
+            <Caption style={styles.caption}>{user?.sede}</Caption>
+          </View>
         </Drawer.Section>
         <Drawer.Item
           icon="home-outline"
@@ -48,6 +45,7 @@ export function DrawerContent({ navigation }, ...props) {
           }}
         />
       </DrawerContentScrollView>
+      <Drawer.Item icon="account-outline" label="Perfil" onPress={() => {}} />
       <Drawer.Item
         icon="logout-variant"
         label="Cerrar sesion"
