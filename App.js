@@ -2,13 +2,15 @@ import { AppRegistry } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { name as appName } from "./app.json";
 import { theme } from "./global/theme";
-import Navigator from "./navigate/Navigator.jsx";
-import { useAuthStore } from "./store/authStore.js";
+import { LoginNav } from "./navigate/Navigator";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <Navigator />
-    </PaperProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider theme={theme}>
+        <LoginNav />
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 

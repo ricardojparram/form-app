@@ -33,9 +33,7 @@ export default function Alert({ type, visible, message, onClose }) {
         <Dialog.Title>
           <View className="flex flex-row items-center">
             <IconButton icon={icon} color={color} size={24} />
-            <Text style={{ color }}>
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </Text>
+            <Text style={{ color }}>{type}</Text>
           </View>
         </Dialog.Title>
         <Dialog.Content>
