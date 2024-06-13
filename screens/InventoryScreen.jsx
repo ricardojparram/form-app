@@ -140,19 +140,25 @@ const Table = () => {
           </DataTable.Title>
         </DataTable.Header>
 
-        {data.slice(from, to).map((item) => (
-          <DataTable.Row
-            key={item.id}
-            onPress={() => handleGetDetails(item.id)}
-          >
-            <DataTable.Cell>{item.presentacion_producto}</DataTable.Cell>
-            <DataTable.Cell>
-              {item.presentacion_peso + " " + item.medida}
-            </DataTable.Cell>
-            <DataTable.Cell>{item.inventario}</DataTable.Cell>
-            <DataTable.Cell>{item.fecha_vencimiento}</DataTable.Cell>
-          </DataTable.Row>
-        ))}
+        {data.length >= 1 ? (
+          data.slice(from, to).map((item) => (
+            <DataTable.Row
+              key={item.id}
+              onPress={() => handleGetDetails(item.id)}
+            >
+              <DataTable.Cell>{item.presentacion_producto}</DataTable.Cell>
+              <DataTable.Cell>
+                {item.presentacion_peso + " " + item.medida}
+              </DataTable.Cell>
+              <DataTable.Cell>{item.inventario}</DataTable.Cell>
+              <DataTable.Cell>{item.fecha_vencimiento}</DataTable.Cell>
+            </DataTable.Row>
+          ))
+        ) : (
+          <Text className="m-auto py-5 drop-shadow-md">
+            No se encontró información...
+          </Text>
+        )}
 
         <DataTable.Pagination
           page={page}
