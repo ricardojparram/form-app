@@ -17,19 +17,21 @@ import { API_SRC } from "@env";
 import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function LogInScreen({ navigation }) {
-  navigation.setOptions({
-    headerShown: false,
-  });
   const [sedes, setSedes] = useState([]);
-  const fetchSedes = async () => {
-    const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
-    const data = await response.json();
-    const sedes = data.map((row) => {
-      return { value: row.id_sede, name: row.nombre };
-    });
-    setSedes(sedes);
-  };
+  const fetchPublicKey = useAuthStore((state) => state.fetchPublicKey);
   useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+    fetchPublicKey();
+    const fetchSedes = async () => {
+      const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
+      const data = await response.json();
+      const sedes = data.map((row) => {
+        return { value: row.id_sede, name: row.nombre };
+      });
+      setSedes(sedes);
+    };
     fetchSedes();
   }, []);
 
