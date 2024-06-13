@@ -2,10 +2,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage, devtools } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
-import { API_SRC } from "@env";
+import { API_SRC, PUBLIC_KEY } from "@env";
 import { urlEncode } from "../utils/urlEncode";
-import { RSA } from "react-native-rsa-native";
-// import {CryptoES}
+import { JSEncrypt } from "jsencrypt";
 
 export const useAuthStore = create(
   devtools(
@@ -15,7 +14,7 @@ export const useAuthStore = create(
         user: null,
         isAuthenticated: false,
         API_SRC: API_SRC,
-        public_key: null,
+        PUBLIC_KEY: PUBLIC_KEY,
 
         // setters
         setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
@@ -43,19 +42,15 @@ export const useAuthStore = create(
         },
 
         login: async (sede, cedula, password) => {
-          // const json = JSON.stringify({
-          //   login: "app",
-          //   sede: sede,
-          //   cedula: cedula,
-          //   password: password,
-          // });
-          // console.log(RSA);
-          // const encryptedData = await RSA.encrypt(json, get().public_key);
-          // console.log(RSA);
+          const json = JSON.stringify({
+            sede: sede,
+            cedula: cedula,
+            password: password,
+          });
+          const encrypt = new JSEncrypt({ default_key_size: 2048 });
+          encrypt.setPublicKey(PUBLIC_KEY);
+          const encrypted = encrypt.encrypt(json);
 
-          // return;
-          // const base64data = btoa(encryptedData);
-          // console.log(base64data);
           const request = await fetch(get().API_SRC + "?url=login", {
             method: "POST",
             headers: {
@@ -63,9 +58,7 @@ export const useAuthStore = create(
             },
             body: urlEncode({
               login: "app",
-              sede: sede,
-              cedula: cedula,
-              password: password,
+              data: encrypted,
             }),
           });
           const res = await request.json();
