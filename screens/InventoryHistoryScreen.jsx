@@ -26,13 +26,17 @@ const Table = () => {
   const [originalData, setOriginalData] = useState([]);
 
   const getData = async () => {
-    const res = await fetch(API_SRC + "?url=inventario&mostrar=&bitacora=", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      API_SRC + "?url=historialInventario&mostrar=&bitacora=",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const res_json = await res.json();
     if (res_json != null) {
+      console.log(res_json[0]);
       setData(res_json);
       setOriginalData(res_json);
     }
@@ -55,7 +59,7 @@ const Table = () => {
 
   const [sortDirectionName, setSortDirectionName] = useState("descending");
   const [sortDirectionDate, setSortDirectionDate] = useState("descending");
-  const [sortDirectionInventory, setSortDirectionInventory] =
+  const [sortDirectionProduct, setSortDirectionProduct] =
     useState("descending");
 
   const toggleName = () => {
@@ -63,8 +67,8 @@ const Table = () => {
       sortDirectionName === "descending" ? "ascending" : "descending";
     const sortedData = [...data].sort((a, b) =>
       newDirection === "ascending"
-        ? a?.presentacion_producto.localeCompare(b?.presentacion_producto)
-        : b?.presentacion_producto.localeCompare(a?.presentacion_producto)
+        ? a?.tipo_movimiento.localeCompare(b?.tipo_movimiento)
+        : b?.tipo_movimiento.localeCompare(a?.tipo_movimiento)
     );
     setSortDirectionName(newDirection);
     setData(sortedData);
@@ -75,29 +79,35 @@ const Table = () => {
       sortDirectionDate === "descending" ? "ascending" : "descending";
     const sortedData = [...data].sort((a, b) =>
       newDirection === "ascending"
-        ? new Date(a?.fecha_vencimiento) - new Date(b?.fecha_vencimiento)
-        : new Date(b?.fecha_vencimiento) - new Date(a?.fecha_vencimiento)
+        ? new Date(a?.fecha) - new Date(b?.fecha)
+        : new Date(b?.fecha) - new Date(a?.fecha)
     );
     setSortDirectionDate(newDirection);
     setData(sortedData);
   };
 
-  const toggleInventory = () => {
+  const toggleProduct = () => {
     const newDirection =
-      sortDirectionInventory === "descending" ? "ascending" : "descending";
+      sortDirectionProduct === "descending" ? "ascending" : "descending";
     const sortedData = [...data].sort((a, b) =>
       newDirection === "ascending"
-        ? a?.inventario - b?.inventario
-        : b?.inventario - a?.inventario
+        ? a?.tipo_movimiento.localeCompare(b?.tipo_movimiento)
+        : b?.tipo_movimiento.localeCompare(a?.tipo_movimiento)
     );
-    setSortDirectionInventory(newDirection);
+    setSortDirectionProduct(newDirection);
     setData(sortedData);
   };
 
   const searchInBar = (text) => {
     const query = normalize(text);
-    const filteredData = originalData.filter((row) =>
-      row?.presentacion_producto.toUpperCase().includes(query.toUpperCase())
+    const filteredData = originalData.filter(
+      (row) =>
+        row?.presentacion_producto
+          .toUpperCase()
+          .includes(query.toUpperCase()) ||
+        row?.tipo_movimiento.toUpperCase().includes(query.toUpperCase()) ||
+        row?.nombre_sede.toUpperCase().includes(query.toUpperCase()) ||
+        row?.fecha.toUpperCase().includes(query.toUpperCase())
     );
     setData(filteredData);
   };
@@ -122,21 +132,21 @@ const Table = () => {
             sortDirection={sortDirectionName}
             onPress={toggleName}
           >
-            Producto
+            Tipo
           </DataTable.Title>
-          <DataTable.Title>Lote</DataTable.Title>
           <DataTable.Title
-            sortDirection={sortDirectionInventory}
-            onPress={toggleInventory}
+            sortDirection={sortDirectionProduct}
+            onPress={toggleProduct}
           >
-            Inventario
+            Producto
           </DataTable.Title>
           <DataTable.Title
             sortDirection={sortDirectionDate}
             onPress={toggleDate}
           >
-            Fecha de vencimiento
+            Fecha
           </DataTable.Title>
+          <DataTable.Title>Sede</DataTable.Title>
         </DataTable.Header>
 
         {data.length >= 1 ? (
@@ -145,12 +155,10 @@ const Table = () => {
               key={item.id}
               onPress={() => handleGetDetails(item.id)}
             >
+              <DataTable.Cell>{item.tipo_movimiento}</DataTable.Cell>
               <DataTable.Cell>{item.presentacion_producto}</DataTable.Cell>
-              <DataTable.Cell>
-                {item.presentacion_peso + " " + item.medida}
-              </DataTable.Cell>
-              <DataTable.Cell>{item.inventario}</DataTable.Cell>
-              <DataTable.Cell>{item.fecha_vencimiento}</DataTable.Cell>
+              <DataTable.Cell>{item.fecha}</DataTable.Cell>
+              <DataTable.Cell>{item.nombre_sede}</DataTable.Cell>
             </DataTable.Row>
           ))
         ) : (
@@ -174,32 +182,54 @@ const Table = () => {
       <CustomModal
         visible={visible}
         onDismiss={() => setVisible(false)}
-        title={modalData.presentacion_producto}
+        title={modalData.nombre_sede}
       >
         <View className="pr-4 text-md flex gap-y-2">
           <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Lote: </Text>
-            <Text className="font-bold">{modalData?.lote}</Text>
+            <Text className="font-bold">Usuario: </Text>
+            <Text className="font-bold">{modalData?.usuario}</Text>
+          </View>
+          <Divider />
+          <View className="flex flex-row justify-between ">
+            <Text className="font-bold">Tipo de movimiento: </Text>
+            <Text className="font-bold">{modalData?.tipo_movimiento}</Text>
           </View>
           <Divider />
           <View className="flex flex-row justify-between">
-            <Text className="font-bold">Inventario: </Text>
-            <Text className="font-bold">{modalData?.inventario}</Text>
+            <Text className="font-bold">Producto: </Text>
+            <Text className="font-bold">
+              {modalData?.presentacion_producto}
+            </Text>
           </View>
           <Divider />
           <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Fecha de vencimiento: </Text>
-            <Text className="font-bold">{modalData?.fecha_vencimiento}</Text>
+            <Text className="font-bold">Cantidad: </Text>
+            <Text className="font-bold">{modalData?.cantidad}</Text>
           </View>
           <Divider />
           <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Clase: </Text>
-            <Text className="font-bold">{modalData?.clase}</Text>
+            <Text className="font-bold">Lote: </Text>
+            <Text className="font-bold">{modalData?.producto_lote}</Text>
           </View>
           <Divider />
           <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Tipo: </Text>
-            <Text className="font-bold">{modalData?.tipo}</Text>
+            <Text className="font-bold">Fecha: </Text>
+            <Text className="font-bold">{modalData?.fecha}</Text>
+          </View>
+          <Divider />
+          <View className="flex flex-row justify-evenly">
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Entrada: </Text>
+              <Text className="font-extrabold">
+                {modalData?.entrada?.toUpperCase()}
+              </Text>
+            </View>
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Salida: </Text>
+              <Text className="font-extrabold">
+                {modalData?.salida?.toUpperCase()}
+              </Text>
+            </View>
           </View>
         </View>
       </CustomModal>
@@ -207,7 +237,7 @@ const Table = () => {
   );
 };
 
-export default function InventoryScreen() {
+export default function HistoryInventoryScreen() {
   useCheckSession();
   return (
     <SafeAreaView className="flex-1 items-center bg-theme-background">

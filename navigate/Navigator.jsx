@@ -3,6 +3,8 @@ import LogInScreen from "../screens/LogInScreen";
 import PassRecoveryScreen from "../screens/PassRecoveryScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import InventoryScreen from "../screens/InventoryScreen";
+import InventoryHistoryScreen from "../screens/InventoryHistoryScreen";
+import DamagedProductScreen from "../screens/DamagedProductScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -31,6 +33,16 @@ export const LoggedInNav = () => {
         name="Inventory"
         component={InventoryScreen}
         options={{ title: "Inventario de productos" }}
+      />
+      <Drawer.Screen
+        name="HistoryInventory"
+        component={InventoryHistoryScreen}
+        options={{ title: "Historial de inventario" }}
+      />
+      <Drawer.Screen
+        name="DamagedProduct"
+        component={DamagedProductScreen}
+        options={{ title: "Productos dañados" }}
       />
     </Drawer.Navigator>
   );
