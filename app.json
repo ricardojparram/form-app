@@ -7,9 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Logo_confondo2.png",
+      "image": "./assets/logoWesleyColor.png",
       "resizeMode": "contain",
-      "backgroundColor": "#e7ddb5"
+      "backgroundColor": "#fff"
     },
     "assetBundlePatterns": [
       "**/*"

@@ -5,6 +5,7 @@ import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import InventoryScreen from "../screens/InventoryScreen";
 import InventoryHistoryScreen from "../screens/InventoryHistoryScreen";
 import DamagedProductScreen from "../screens/DamagedProductScreen";
+import DonationSreen from "../screens/DonationSreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -43,6 +44,11 @@ export const LoggedInNav = () => {
         name="DamagedProduct"
         component={DamagedProductScreen}
         options={{ title: "Productos dañados" }}
+      />
+      <Drawer.Screen
+        name="Donation"
+        component={DonationSreen}
+        options={{ title: "Donaciones de productos" }}
       />
     </Drawer.Navigator>
   );

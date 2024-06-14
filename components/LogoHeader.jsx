@@ -6,7 +6,7 @@ export const LogoHeader = () => {
       <Image
         resizeMode="contain"
         className="w-[80vw] h-[100%]"
-        source={require("../assets/Logo_titulo.png")}
+        source={require("../assets/logoWesleyColor.png")}
       />
     </View>
   );

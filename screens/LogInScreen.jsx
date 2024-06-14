@@ -25,6 +25,10 @@ export default function LogInScreen({ navigation }) {
       headerShown: false,
     });
     const fetchSedes = async () => {
+      if (!API_SRC) {
+        console.error("API_SRC no está definido.");
+        return;
+      }
       const response = await fetch(`${API_SRC}?url=sede&mostrar=&bitacora=`);
       const data = await response.json();
       const sedes = data.map((row) => {

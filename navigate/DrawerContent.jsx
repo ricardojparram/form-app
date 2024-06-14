@@ -58,6 +58,13 @@ export function DrawerContent({ navigation }, ...props) {
             navigation.navigate("DamagedProduct");
           }}
         />
+        <Drawer.Item
+          icon="hand-heart-outline"
+          label="Donaciones"
+          onPress={() => {
+            navigation.navigate("Donation");
+          }}
+        />
       </DrawerContentScrollView>
       <Drawer.Item icon="account-outline" label="Perfil" onPress={() => {}} />
       <Drawer.Item
