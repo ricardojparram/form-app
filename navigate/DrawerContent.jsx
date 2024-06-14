@@ -47,6 +47,20 @@ export function DrawerContent({ navigation }, ...props) {
             navigation.navigate("Inventory");
           }}
         />
+        <Drawer.Item
+          icon="history"
+          label="Historial de inventario"
+          onPress={() => {
+            navigation.navigate("HistoryInventory");
+          }}
+        />
+        <Drawer.Item
+          icon="package-variant"
+          label="Productos dañados"
+          onPress={() => {
+            navigation.navigate("DamagedProduct");
+          }}
+        />
       </DrawerContentScrollView>
       <Drawer.Item
         icon="logout-variant"
