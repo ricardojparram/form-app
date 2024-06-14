@@ -24,27 +24,6 @@ export const useAuthStore = create(
 
         //methods
 
-        fetchPublicKey: async () => {
-          try {
-            if (!API_SRC) {
-              console.error("API_SRC no está definido.");
-              return;
-            }
-            const request = await fetch(
-              get().API_SRC + "?url=login&getPublicKey="
-            );
-            const res = await request.json();
-            if (!res.key) {
-              throw new Error("No public key");
-            }
-            const key = atob(res?.key);
-            set({ public_key: key });
-          } catch (error) {
-            console.error("Error fetching public key: " + error);
-            set({ public_key: null });
-          }
-        },
-
         login: async (sede, cedula, password) => {
           const json = JSON.stringify({
             sede: sede,

@@ -1,6 +1,6 @@
 export const theme = {
   "colors": {
-    "primary": "rgb(56, 107, 1)",
+    "primary": "rgb(150 189 13)",
     "onPrimary": "rgb(255, 255, 255)",
     "primaryContainer": "rgb(183, 244, 129)",
     "onPrimaryContainer": "rgb(13, 32, 0)",

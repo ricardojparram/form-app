@@ -47,6 +47,14 @@ export function DrawerContent({ navigation }, ...props) {
             navigation.navigate("Inventory");
           }}
         />
+        <Drawer.Item
+        icon="hand-heart-outline"
+        label="Donaciones"
+        onPress={()=>{
+          navigation.navigate("Donation");
+        }}
+
+        />
       </DrawerContentScrollView>
       <Drawer.Item
         icon="logout-variant"
