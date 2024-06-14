@@ -34,5 +34,5 @@ export const useCheckSession = () => {
         });
       }
     }
-  }, [isAuthenticated, navigation]);
+  }, [isAuthenticated, navigation, setIsAuthenticated]);
 };
