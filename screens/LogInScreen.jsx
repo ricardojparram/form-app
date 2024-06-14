@@ -17,8 +17,9 @@ import { API_SRC } from "@env";
 import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function LogInScreen({ navigation }) {
+  useCheckSession();
+
   const [sedes, setSedes] = useState([]);
-  const fetchPublicKey = useAuthStore((state) => state.fetchPublicKey);
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -38,7 +39,6 @@ export default function LogInScreen({ navigation }) {
     fetchSedes();
   }, []);
 
-  useCheckSession();
   const login = useAuthStore((state) => state.login);
   const { control, handleSubmit } = useForm();
   const [alert, setAlert] = useState({
