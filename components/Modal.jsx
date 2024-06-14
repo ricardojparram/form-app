@@ -12,7 +12,7 @@ export const CustomModal = ({ visible, onDismiss, title, children }) => {
         contentContainerStyle={containerStyle}
       >
         <ScrollView className="flex gap-4">
-          <Text className="text-2xl text-black">{title}</Text>
+          <Text className="text-xl text-center text-black">{title}</Text>
 
           {children}
         </ScrollView>
