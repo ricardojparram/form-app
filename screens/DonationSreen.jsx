@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Divider, Searchbar, Text } from "react-native-paper";
+import { Divider, ActivityIndicator, Searchbar, Text } from "react-native-paper";
 import { useCheckSession } from "../hooks/useCheckSession";
 import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
@@ -40,6 +40,15 @@ const Table = () => {
             setOriginalData(res_json);
         }
     };
+
+    const getDetails = async (id) => {
+        const res = await fetch(API_SRC + "?url=donativoPersonal&detalleD=&id=" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => res.json());
+        return res
+    }
 
     useEffect(() => {
         getData();
@@ -84,7 +93,7 @@ const Table = () => {
 
     const toggleId = () => {
         const newDirection = sortDirectionId === "descending" ? "ascending" : "descending";
-    
+
         const parseIdentifier = (id) => {
             const match = id.match(/^([A-Za-z-]*)(\d+)$/);
             if (match) {
@@ -92,38 +101,47 @@ const Table = () => {
             }
             return { prefix: '', number: parseInt(id, 10) };
         };
-    
+
         const sortedData = [...data].sort((a, b) => {
             const idA = parseIdentifier(a?.identificador);
             const idB = parseIdentifier(b?.identificador);
-    
+
             if (idA.prefix < idB.prefix) return newDirection === "ascending" ? -1 : 1;
             if (idA.prefix > idB.prefix) return newDirection === "ascending" ? 1 : -1;
-    
+
             if (idA.number < idB.number) return newDirection === "ascending" ? -1 : 1;
             if (idA.number > idB.number) return newDirection === "ascending" ? 1 : -1;
-    
+
             return 0;
         });
-    
+
         setSortDirectionId(newDirection);
         setData(sortedData);
     };
-    
+
 
     const searchInBar = (text) => {
         const query = normalize(text);
         const filteredData = originalData.filter((row) =>
-            row?.beneficiario.toUpperCase().includes(query.toUpperCase())
+            row?.beneficiario.toUpperCase().includes(query.toUpperCase()) ||
+            row?.identificador.toUpperCase().includes(query.toUpperCase())
         );
         setData(filteredData);
     }
 
-    const [visible, setVisible] = useState(false);
-    const [modalData, setModalData] = useState({});
-    const handleGetDetails = (id) => {
-        setModalData(getDetails(id, data));
-        setVisible(true);
+    const [modalData, setModalData] = useState({
+        title: "",
+        date: "",
+        beneficiary: "",
+        Identifier: "",
+        visible: false,
+        data: [],
+    });
+
+    const handleGetDetails = async (id, title, date, beneficiary, Identifier) => {
+        setModalData((state) => ({ data: [], title: title, date: date, beneficiary: beneficiary, Identifier: Identifier, visible: true }))
+        const res = await getDetails(id);
+        setModalData((state) => ({ ...state, data: res }))
     };
 
 
@@ -146,7 +164,7 @@ const Table = () => {
                         sortDirection={sortDirectionId}
                         onPress={toggleId}
                     >
-                        Cedula
+                        Identificador
                     </DataTable.Title>
                     <DataTable.Title
                         sortDirection={sortDirectionDate}
@@ -160,6 +178,9 @@ const Table = () => {
                     data.slice(from, to).map((item) => (
                         <DataTable.Row
                             key={item.id_donaciones}
+                            onPress={() =>
+                                handleGetDetails(item.id_donaciones, item.id_donaciones, item.fecha, item.beneficiario, item.identificador)
+                            }
                         >
                             <DataTable.Cell>{item.beneficiario}</DataTable.Cell>
                             <DataTable.Cell>{item.identificador}</DataTable.Cell>
@@ -172,17 +193,58 @@ const Table = () => {
                     </Text>
                 )}
                 <DataTable.Pagination
-                page={page}
-                numberOfPages={Math.ceil(data.length / itemsPerPage)}
-                onPageChange={(page) => setPage(page)}
-                label={`${from + 1}-${to} de ${data.length}`}
-                numberOfItemsPerPageList={numberOfItemsPerPageList}
-                numberOfItemsPerPage={itemsPerPage}
-                onItemsPerPageChange={setItemsPerPage}
-                showFastPaginationControls
-                selectPageDropdownLabel={"Filas por pagina"}
+                    page={page}
+                    numberOfPages={Math.ceil(data.length / itemsPerPage)}
+                    onPageChange={(page) => setPage(page)}
+                    label={`${from + 1}-${to} de ${data.length}`}
+                    numberOfItemsPerPageList={numberOfItemsPerPageList}
+                    numberOfItemsPerPage={itemsPerPage}
+                    onItemsPerPageChange={setItemsPerPage}
+                    showFastPaginationControls
+                    selectPageDropdownLabel={"Filas por pagina"}
                 />
             </DataTable>
+            <CustomModal
+                visible={modalData.visible}
+                onDismiss={() => {
+                    setModalData((state) => ({ ...state, visible: false }))
+                }}
+                title={"Numero de Donacion #" + modalData.title}
+            >
+                <View className="pr-4 text-md flex gap-y-2">
+                    <View className="flex flex-row justify-between">
+                        <Text className="font-bold">Identificador: </Text>
+                        <Text className="font-bold">{modalData?.Identifier} </Text>
+                    </View>
+                    <Divider />
+                    <View className="flex flex-row justify-between">
+                        <Text className="font-bold">Beneficiario: </Text>
+                        <Text className="font-bold">{modalData?.beneficiary} </Text>
+                    </View>
+                    <Divider />
+                    <View className="flex flex-row justify-between">
+                        <Text className="font-bold">Fecha: </Text>
+                        <Text className="font-bold">{modalData?.date} </Text>
+                    </View>
+                    <Divider />
+                    <Text>Productos: </Text>
+                    {modalData.data.length >= 1 ? (
+                        modalData.data.map((item, i) => (
+                            <View className="mx-2 gap-y-1">
+                                <View className="flex flex-row justify-between">
+                                    <Text className="font-extrabold">
+                                        {item?.nombrepro}
+                                    </Text>
+                                    <Text className="font-extrabold">{item?.cantidad}</Text>
+                                </View>
+                                {i != modalData.data.length - 1 && <Divider />}
+                            </View>
+                        ))
+                    ) : (
+                        <ActivityIndicator animating={true} />
+                    )}
+                </View>
+            </CustomModal>
         </View>
     );
 };
