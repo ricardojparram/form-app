@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 
 export function DrawerContent({ navigation }, ...props) {
   const [logout, user] = useAuthStore((state) => [state.logout, state.user]);
+  const [token] = useAuthStore((state) => [state.token]);
   const handleLogOut = () => {
     logout();
     navigation.navigate("LogIn");

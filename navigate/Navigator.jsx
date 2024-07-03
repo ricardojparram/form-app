@@ -7,6 +7,7 @@ import InventoryHistoryScreen from "../screens/InventoryHistoryScreen";
 import DamagedProductScreen from "../screens/DamagedProductScreen";
 import DonationSreen from "../screens/DonationSreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import EditProfileScreen from "../screens/EditProfileScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -55,6 +56,16 @@ export const LoggedInNav = () => {
         name="Profile"
         component={ProfileScreen}
         options={{ title: "Perfil de usuario" }}
+      />
+      <Drawer.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{ title: "Actualizar información personal" }}
+      />
+      <Drawer.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+        options={{ title: "Actualizar contraseña" }}
       />
     </Drawer.Navigator>
   );
