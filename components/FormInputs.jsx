@@ -26,9 +26,9 @@ export const CustomInput = ({
             style={style}
             label={placeholder}
             mode="outlined"
+            {...props}
             value={value}
             error={error}
-            {...props}
             onBlur={onBlur}
             onChangeText={onChange}
           />
