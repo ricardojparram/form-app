@@ -6,20 +6,32 @@ import { useForm } from "react-hook-form";
 import { CustomInput } from "../components/FormInputs";
 import { useProfileStore } from "../store/profileStore";
 import { useAuthStore } from "../store/authStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { LogoHeader } from "../components/LogoHeader";
 
 export default function ProfileScreen({ navigation }) {
-  const { control, handleSubmit } = useForm();
-  //   const [user] = useAuthStore((state) => [state.user]);
-  //   console.log(user);
-
-  const onSubmit = (data) => {
-    //   updatePersonalData();
+  const [setUser, updatePersonalData] = useProfileStore((state) => [
+    state.setUser,
+    state.updatePersonalData,
+  ]);
+  const [user, token] = useAuthStore((state) => [state.user, state.token]);
+  useEffect(() => {
+    setUser(user);
+    setToken(token);
+  }, []);
+  // console.log(user);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      firstname: user.nombre,
+      lastname: user.apellido,
+      email: user.correo,
+    },
+  });
+  const onSubmit = async (data) => {
+    await updatePersonalData(data.firstname, data.lastname, data.email);
     // console.log(user);
-    // console.log(data);
+    // console.log();
   };
-  //   console.log(user);
-  //   console.log(user);
 
   return (
     <SafeAreaView className="flex-1 bg-theme-background">
@@ -28,12 +40,13 @@ export default function ProfileScreen({ navigation }) {
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
       >
+        <LogoHeader />
         <View className="flex px-6 gap-3">
-          {/* <CustomInput
+          <CustomInput
             placeholder="Nombre"
             autoComplete="name"
             control={control}
-            name="name"
+            name="firstname"
             value={user.nombre}
             rules={{
               required: "Complete el nombre.",
@@ -71,7 +84,7 @@ export default function ProfileScreen({ navigation }) {
                 message: "El correo tiene que ser válido",
               },
             }}
-          /> */}
+          />
           <View className="items-end">
             <Button
               className="w-[180px]"
