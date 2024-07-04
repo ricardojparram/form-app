@@ -16,6 +16,7 @@
     "@react-navigation/native": "6.1.10",
     "@react-navigation/native-stack": "6.9.17",
     "expo": "~51.0.11",
+    "expo-file-system": "^17.0.1",
     "expo-image-picker": "15.0.5",
     "expo-screen-orientation": "~7.0.5",
     "expo-status-bar": "1.12.1",

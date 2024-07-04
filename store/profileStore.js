@@ -2,8 +2,7 @@ import { create } from "zustand";
 import { urlEncode } from "../utils/urlEncode";
 import { API_SRC } from "@env";
 import { JSEncrypt } from "jsencrypt";
-import { useAuthStore } from "./authStore";
-// import RNFetchBlob from "react-native-fetch-blob";
+import * as FileSystem from "expo-file-system";
 
 export const useProfileStore = create((set, get) => ({
   user: null,
@@ -12,8 +11,18 @@ export const useProfileStore = create((set, get) => ({
 
   // setters
   setUser: (user) => set({ user: user }),
+  setToken: (token) => set({ token: token }),
   // methods
+  createTempImage: async () => {
+    const base64Image = "data:image/jpeg;base64,"; // Aquí puedes poner una cadena base64 para una imagen vacía
+    const fileUri = FileSystem.documentDirectory + "empty.jpg";
 
+    await FileSystem.writeAsStringAsync(fileUri, base64Image, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    return fileUri;
+  },
   updatePersonalData: async (firstname, lastname, email) => {
     // "",
     //   $_POST["nombre"],
@@ -22,39 +31,50 @@ export const useProfileStore = create((set, get) => ({
     //   $_POST["email"],
     //   $cedula,
     //   $_POST["borrar"];
-    const data = new FormData();
-    // data.append("foto", {
-    //   uri: "asdasd",
-    //   name: "photo.png",
-    //   filename: "imageName.png",
-    //   type: "image/png",
+    // const data = new FormData();
+    // // data.append("foto", {
+    // //   uri: "",
+    // //   name: "empty.jpg",
+    // //   type: "image/jpeg",
+    // // });
+    // data.append("cedula", get().user.cedula);
+    // data.append("nombre", firstname);
+    // data.append("apellido", lastname);
+    // data.append("email", email);
+    // console.log(data);
+    // const req = await fetch(API_SRC + "?url=perfil", {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + get().token,
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    //   body: data,
     // });
-    // body.append("Content-Type", "image/png");
+    // const res = await req.text();
+    const localUri = await get().createTempImage();
+
+    const data = new FormData();
+    data.append("foto", {
+      uri: localUri,
+      name: "empty.jpg",
+      type: "image/jpeg",
+    });
     data.append("cedula", get().user.cedula);
     data.append("nombre", firstname);
     data.append("apellido", lastname);
     data.append("email", email);
+
     console.log(data);
-    // const request = await RNFetchBlob.fetch(
-    //   "POST",
-    //   API_SRC + "?url=perfil",
-    //   {
-    //     Authorization: "Bearer " + useAuthStore.getState().token,
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    //   [
-    //     {
-    //       name: "avatar-foo",
-    //       filename: "avatar-foo.png",
-    //       type: "image/png",
-    //       data: RNFetchBlob.wrap(get().user.fotoPerfil),
-    //     },
-    //     { name: "cedula", data: get().user.cedula },
-    //     { name: "nombre", data: firstname },
-    //     { name: "apellido", data: lastname },
-    //     { name: "email", data: email },
-    //   ]
-    // );
-    console.log(await request.text());
+
+    const req = await fetch(API_SRC + "?url=perfil", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + get().token,
+      },
+      body: data,
+    });
+
+    const res = await req.text();
+    console.log(res);
   },
 }));

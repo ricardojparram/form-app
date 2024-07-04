@@ -20,7 +20,7 @@ export default function ProfileScreen({ navigation }) {
           <View className="flex flex-col h-[40vw] mb-4 items-center justify-center">
             <Avatar.Image
               size={120}
-              source={{ uri: `${API_SRC}${user.fotoPerfil}` || "" }}
+              source={{ uri: `${API_SRC}${user?.fotoPerfil}` || "" }}
             />
           </View>
 

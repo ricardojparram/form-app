@@ -10,11 +10,13 @@ import { useEffect, useState } from "react";
 import { LogoHeader } from "../components/LogoHeader";
 
 export default function ProfileScreen({ navigation }) {
-  const [setUser, updatePersonalData] = useProfileStore((state) => [
-    state.setUser,
-    state.updatePersonalData,
-  ]);
   const [user, token] = useAuthStore((state) => [state.user, state.token]);
+  const [updatePersonalData, setUser, setToken] = useProfileStore((state) => [
+    state.updatePersonalData,
+    state.setUser,
+    state.setToken,
+  ]);
+
   useEffect(() => {
     setUser(user);
     setToken(token);
@@ -27,6 +29,8 @@ export default function ProfileScreen({ navigation }) {
       email: user.correo,
     },
   });
+  console.log("xd");
+  console.log(user);
   const onSubmit = async (data) => {
     await updatePersonalData(data.firstname, data.lastname, data.email);
     // console.log(user);
@@ -47,7 +51,6 @@ export default function ProfileScreen({ navigation }) {
             autoComplete="name"
             control={control}
             name="firstname"
-            value={user.nombre}
             rules={{
               required: "Complete el nombre.",
               pattern: {
@@ -61,7 +64,6 @@ export default function ProfileScreen({ navigation }) {
             autoComplete="family-name"
             control={control}
             name="lastname"
-            value={user.apellido}
             rules={{
               required: "Complete el apellido.",
               pattern: {
@@ -75,7 +77,6 @@ export default function ProfileScreen({ navigation }) {
             autoComplete="email"
             autoCapitalize="none"
             control={control}
-            value={user.correo}
             name="email"
             rules={{
               required: "Complete el correo.",
