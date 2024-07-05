@@ -55,7 +55,7 @@ export default function LogInScreen({ navigation }) {
   const logIn = async (data) => {
     setAlert((state) => ({
       ...state,
-      loading: false,
+      loading: true,
     }));
     const res = await login(
       data.sede,
@@ -83,7 +83,7 @@ export default function LogInScreen({ navigation }) {
     }
     setAlert((state) => ({
       ...state,
-      loading: true,
+      loading: false,
     }));
   };
 
@@ -162,16 +162,10 @@ export default function LogInScreen({ navigation }) {
             <Button
               className="w-[50%] m-auto mt-4"
               mode="contained"
+              loading={alert.loading}
               onPress={handleSubmit(logIn)}
             >
-              {alert.loading ? (
-                <ActivityIndicator
-                  animating={alert.loading}
-                  color={MD2Colors.red800}
-                />
-              ) : (
-                "Iniciar Sesion"
-              )}
+              Iniciar Sesion
             </Button>
           </View>
           <AnchorText href={() => navigation.navigate("Recovery")}>
