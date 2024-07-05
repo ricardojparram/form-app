@@ -3,28 +3,28 @@ import { Dialog, Portal, Text, Button, IconButton } from "react-native-paper";
 
 const alertStyles = {
   success: {
-    container: "bg-green-100 border-green-500",
+    container: "bg-theme-background",
     icon: "check-circle",
-    color: "green",
+    color: "#058f00",
   },
   error: {
-    container: "bg-red-100 border-red-500",
+    container: "bg-red-100",
     icon: "alert-circle",
     color: "red",
   },
   warning: {
-    container: "bg-yellow-100 border-yellow-500",
+    container: "bg-yellow-100",
     icon: "alert",
     color: "yellow",
   },
   info: {
-    container: "bg-blue-100 border-blue-500",
+    container: "bg-blue-100",
     icon: "information",
     color: "blue",
   },
 };
 
-export default function Alert({ type, visible, message, onClose }) {
+export default function Alert({ type, title, visible, message, onClose }) {
   const { container, icon, color } = alertStyles[type] || alertStyles.info;
 
   return (
@@ -32,8 +32,8 @@ export default function Alert({ type, visible, message, onClose }) {
       <Dialog visible={visible} onDismiss={onClose} className={container}>
         <Dialog.Title>
           <View className="flex flex-row items-center">
-            <IconButton icon={icon} color={color} size={24} />
-            <Text style={{ color }}>{type}</Text>
+            <IconButton icon={icon} iconColor={color} size={24} />
+            <Text style={{ color }}>{title ?? type}</Text>
           </View>
         </Dialog.Title>
         <Dialog.Content>
