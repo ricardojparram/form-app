@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { urlEncode } from "../utils/urlEncode";
 import { API_SRC } from "@env";
 import { JSEncrypt } from "jsencrypt";
+import { useAuthStore } from "./authStore";
 import * as FileSystem from "expo-file-system";
 
 export const useProfileStore = create((set, get) => ({
@@ -24,47 +25,12 @@ export const useProfileStore = create((set, get) => ({
     return fileUri;
   },
   updatePersonalData: async (firstname, lastname, email) => {
-    // "",
-    //   $_POST["nombre"],
-    //   $_POST["apellido"],
-    //   $_POST["cedula"],
-    //   $_POST["email"],
-    //   $cedula,
-    //   $_POST["borrar"];
-    // const data = new FormData();
-    // // data.append("foto", {
-    // //   uri: "",
-    // //   name: "empty.jpg",
-    // //   type: "image/jpeg",
-    // // });
-    // data.append("cedula", get().user.cedula);
-    // data.append("nombre", firstname);
-    // data.append("apellido", lastname);
-    // data.append("email", email);
-    // console.log(data);
-    // const req = await fetch(API_SRC + "?url=perfil", {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: "Bearer " + get().token,
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    //   body: data,
-    // });
-    // const res = await req.text();
-    const localUri = await get().createTempImage();
-
     const data = new FormData();
-    data.append("foto", {
-      uri: localUri,
-      name: "empty.jpg",
-      type: "image/jpeg",
-    });
+    data.append("app", "");
     data.append("cedula", get().user.cedula);
     data.append("nombre", firstname);
     data.append("apellido", lastname);
     data.append("email", email);
-
-    console.log(data);
 
     const req = await fetch(API_SRC + "?url=perfil", {
       method: "POST",
@@ -74,7 +40,13 @@ export const useProfileStore = create((set, get) => ({
       body: data,
     });
 
-    const res = await req.text();
+    const res = await req.json();
     console.log(res);
+    if (res.edit.token) {
+      const setUserFromToken = useAuthStore.getState().setUserFromToken;
+      setUserFromToken(res.edit.token);
+      return true;
+    }
+    return false;
   },
 }));

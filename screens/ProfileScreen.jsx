@@ -4,10 +4,22 @@ import { Text, Button, Divider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar } from "react-native-paper";
 import { useAuthStore } from "../store/authStore";
-
+import { useEffect } from "react";
+import { useProfileStore } from "../store/profileStore";
 export default function ProfileScreen({ navigation }) {
-  const [user, API_SRC] = useAuthStore((state) => [state.user, state.API_SRC]);
-  console.log(user);
+  const [user, API_SRC, token] = useAuthStore((state) => [
+    state.user,
+    state.API_SRC,
+    state.token,
+  ]);
+  const [setUser, setToken] = useProfileStore((state) => [
+    state.setUser,
+    state.setToken,
+  ]);
+  useEffect(() => {
+    setUser(user);
+    setToken(token);
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-theme-background">
@@ -30,23 +42,23 @@ export default function ProfileScreen({ navigation }) {
             </Text>
             <View className="flex flex-row justify-between">
               <Text className="text-lg font-bold">Cédula</Text>
-              <Text className="text-lg">{user.cedula} </Text>
+              <Text className="text-lg">{user?.cedula} </Text>
             </View>
             <View className="flex flex-row justify-between">
               <Text className="text-lg font-bold">Nombre</Text>
-              <Text className="text-lg">{user.nombre} </Text>
+              <Text className="text-lg">{user?.nombre} </Text>
             </View>
             <View className="flex flex-row justify-between">
               <Text className="text-lg font-bold">Apellido</Text>
-              <Text className="text-lg">{user.apellido} </Text>
+              <Text className="text-lg">{user?.apellido} </Text>
             </View>
             <View className="flex flex-row justify-between">
               <Text className="text-lg font-bold">Puesto</Text>
-              <Text className="text-lg">{user.puesto} </Text>
+              <Text className="text-lg">{user?.puesto} </Text>
             </View>
             <View className="flex flex-row justify-between">
               <Text className="text-lg font-bold">Correo</Text>
-              <Text className="text-lg ">{user.correo} </Text>
+              <Text className="text-lg ">{user?.correo} </Text>
             </View>
           </View>
           <View className="flex gap-3 px-5 mt-4">

@@ -21,6 +21,14 @@ export const useAuthStore = create(
         setToken: (token) => set({ token }),
         setUser: (user) => set({ user }),
         setPublicKey: (public_key) => set({ public_key }),
+        setUserFromToken: (token) => {
+          const { data } = jwtDecode(token);
+          set({
+            token: token,
+            user: data,
+          });
+          return true;
+        },
 
         //methods
 

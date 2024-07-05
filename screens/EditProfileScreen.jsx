@@ -5,31 +5,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm } from "react-hook-form";
 import { CustomInput } from "../components/FormInputs";
 import { useProfileStore } from "../store/profileStore";
-import { useAuthStore } from "../store/authStore";
-import { useEffect, useState } from "react";
 import { LogoHeader } from "../components/LogoHeader";
 
 export default function ProfileScreen({ navigation }) {
-  const [user, token] = useAuthStore((state) => [state.user, state.token]);
-  const [updatePersonalData, setUser, setToken] = useProfileStore((state) => [
+  const [updatePersonalData, user, token] = useProfileStore((state) => [
     state.updatePersonalData,
-    state.setUser,
-    state.setToken,
+    state.user,
+    state.token,
   ]);
-
-  useEffect(() => {
-    setUser(user);
-    setToken(token);
-  }, []);
   // console.log(user);
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      firstname: user.nombre,
-      lastname: user.apellido,
-      email: user.correo,
+      firstname: user?.nombre,
+      lastname: user?.apellido,
+      email: user?.correo,
     },
   });
-  console.log("xd");
   console.log(user);
   const onSubmit = async (data) => {
     await updatePersonalData(data.firstname, data.lastname, data.email);
