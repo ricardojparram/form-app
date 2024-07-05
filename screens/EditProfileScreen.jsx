@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { CustomInput } from "../components/FormInputs";
 import { useProfileStore } from "../store/profileStore";
 import { LogoHeader } from "../components/LogoHeader";
+import { useState } from "react";
+import Alert from "../components/Alert";
 
 export default function ProfileScreen({ navigation }) {
   const [updatePersonalData, user, token] = useProfileStore((state) => [
@@ -13,7 +15,14 @@ export default function ProfileScreen({ navigation }) {
     state.user,
     state.token,
   ]);
-  // console.log(user);
+  const [alert, setAlert] = useState({
+    loading: false,
+    visible: false,
+    type: "error",
+    title: "Error",
+    message: "error",
+  });
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       firstname: user?.nombre,
@@ -21,11 +30,38 @@ export default function ProfileScreen({ navigation }) {
       email: user?.correo,
     },
   });
-  console.log(user);
+
   const onSubmit = async (data) => {
-    await updatePersonalData(data.firstname, data.lastname, data.email);
-    // console.log(user);
-    // console.log();
+    setAlert((state) => ({
+      ...state,
+      loading: true,
+    }));
+    const res = await updatePersonalData(
+      data.firstname,
+      data.lastname,
+      data.email
+    );
+    if (!res) {
+      setAlert((state) => ({
+        ...state,
+        visible: true,
+        message: "Ha ocurrido un error",
+        type: "error",
+        title: "Error",
+      }));
+    } else {
+      setAlert((state) => ({
+        ...state,
+        visible: true,
+        message: "Se ha actualizado su información.",
+        type: "success",
+        title: "Éxito",
+      }));
+    }
+    setAlert((state) => ({
+      ...state,
+      loading: false,
+    }));
   };
 
   return (
@@ -81,6 +117,7 @@ export default function ProfileScreen({ navigation }) {
             <Button
               className="w-[180px]"
               icon="file-edit-outline"
+              loading={alert.loading}
               mode="contained"
               onPress={handleSubmit(onSubmit)}
             >
@@ -89,6 +126,16 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
+      <Alert
+        type={alert.type}
+        title={alert.title}
+        visible={alert.visible}
+        message={alert.message}
+        onClose={() => {
+          navigation.navigate("Profile");
+          setAlert((state) => ({ ...state, visible: false }));
+        }}
+      />
     </SafeAreaView>
   );
 }
