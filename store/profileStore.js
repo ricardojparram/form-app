@@ -15,16 +15,6 @@ export const useProfileStore = create((set, get) => ({
   setUser: (user) => set({ user: user }),
   setToken: (token) => set({ token: token }),
   // methods
-  createTempImage: async () => {
-    const base64Image = "data:image/jpeg;base64,"; // Aquí puedes poner una cadena base64 para una imagen vacía
-    const fileUri = FileSystem.documentDirectory + "empty.jpg";
-
-    await FileSystem.writeAsStringAsync(fileUri, base64Image, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    return fileUri;
-  },
 
   updatePersonalData: async (firstname, lastname, email) => {
     const data = new FormData();
@@ -74,5 +64,36 @@ export const useProfileStore = create((set, get) => ({
     const res = await request.json();
 
     return res;
+  },
+
+  changeProfilePicture: async (img) => {
+    const data = new FormData();
+    data.append("foto", {
+      uri: img,
+      name: "foto.png",
+      filename: "foto.png",
+      type: "image/png",
+    });
+    console.log(get().user);
+    data.append("cedula", get().user.cedula);
+    data.append("nombre", get().user.nombre);
+    data.append("apellido", get().user.apellido);
+    data.append("email", get().user.correo);
+    const req = await fetch(API_SRC + "?url=perfil", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + get().token,
+      },
+      body: data,
+    });
+
+    const res = await req.json();
+    console.log(res);
+    if (res.edit.token) {
+      const setUserFromToken = useAuthStore.getState().setUserFromToken;
+      setUserFromToken(res.edit.token);
+      return API_SRC + res.foto.url;
+    }
+    return false;
   },
 }));
