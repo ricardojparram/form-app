@@ -33,12 +33,11 @@ export const useAuthStore = create(
           const encrypt = new JSEncrypt({ default_key_size: 2048 });
           encrypt.setPublicKey(PUBLIC_KEY);
           const encrypted = encrypt.encrypt(json);
-
           if (!API_SRC) {
             console.error("API_SRC no está definido.");
             return;
           }
-
+          console.log(API_SRC)
           const request = await fetch(get().API_SRC + "?url=login", {
             method: "POST",
             headers: {
