@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { urlEncode } from "../utils/urlEncode";
-import { API_SRC } from "@env";
+import { API_SRC, PUBLIC_KEY } from "@env";
 import { JSEncrypt } from "jsencrypt";
 import { useAuthStore } from "./authStore";
 import * as FileSystem from "expo-file-system";
+import ChangePassword from "../screens/ChangePasswordScreen";
 
 export const useProfileStore = create((set, get) => ({
   user: null,
@@ -24,6 +25,7 @@ export const useProfileStore = create((set, get) => ({
 
     return fileUri;
   },
+
   updatePersonalData: async (firstname, lastname, email) => {
     const data = new FormData();
     data.append("app", "");
@@ -48,5 +50,29 @@ export const useProfileStore = create((set, get) => ({
       return true;
     }
     return false;
+  },
+
+  updatePassword: async (actPassword, newPassword) => {
+    const json = JSON.stringify({
+      actPassword: actPassword,
+      newPassword: newPassword,
+    });
+    const encrypt = new JSEncrypt({ default_key_size: 2048 });
+    encrypt.setPublicKey(PUBLIC_KEY);
+    const encrypted = encrypt.encrypt(json);
+    const request = await fetch(API_SRC + "?url=perfil", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + get().token,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: urlEncode({
+        changePassword: "app",
+        data: encrypted,
+      }),
+    });
+    const res = await request.json();
+
+    return res;
   },
 }));
