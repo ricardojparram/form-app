@@ -66,6 +66,13 @@ export function DrawerContent({ navigation }, ...props) {
             navigation.navigate("Donation");
           }}
         />
+        <Drawer.Item
+          icon="account-group"
+          label="Personal"
+          onPress={() => {
+            navigation.navigate("Personal");
+          }}
+        />
       </DrawerContentScrollView>
       <Drawer.Item
         icon="account-outline"
