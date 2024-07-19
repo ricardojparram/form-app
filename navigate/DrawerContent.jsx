@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 
 export function DrawerContent({ navigation }, ...props) {
   const [logout, user] = useAuthStore((state) => [state.logout, state.user]);
+  const [token] = useAuthStore((state) => [state.token]);
   const handleLogOut = () => {
     logout();
     navigation.navigate("LogIn");
@@ -66,7 +67,13 @@ export function DrawerContent({ navigation }, ...props) {
           }}
         />
       </DrawerContentScrollView>
-      <Drawer.Item icon="account-outline" label="Perfil" onPress={() => {}} />
+      <Drawer.Item
+        icon="account-outline"
+        label="Perfil"
+        onPress={() => {
+          navigation.navigate("Profile");
+        }}
+      />
       <Drawer.Item
         icon="logout-variant"
         label="Cerrar sesion"

@@ -23,10 +23,10 @@ export const CustomInput = ({
       }) => (
         <View>
           <TextInput
-            {...props}
             style={style}
             label={placeholder}
             mode="outlined"
+            {...props}
             value={value}
             error={error}
             onBlur={onBlur}
