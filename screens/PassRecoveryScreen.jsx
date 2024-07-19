@@ -7,8 +7,9 @@ import { CustomInput, AnchorText } from "../components/FormInputs";
 import { LogoHeader } from "../components/LogoHeader";
 import { useForm } from "react-hook-form";
 import { useCheckSession } from "../hooks/useCheckSession";
-import { API_SRC } from "@env";
+import { API_SRC, PUBLIC_KEY } from "@env";
 import { urlEncode } from "../utils/urlEncode";
+import { JSEncrypt } from "jsencrypt";
 import Alert from "../components/Alert";
 
 export default function PassRecoveryScreen({ navigation }) {
@@ -22,14 +23,16 @@ export default function PassRecoveryScreen({ navigation }) {
   });
 
   const sendEmail = async (email) => {
-    console.log(email);
+    const encrypt = new JSEncrypt({ default_key_size: 2048 });
+    encrypt.setPublicKey(PUBLIC_KEY);
+    const encrypted = encrypt.encrypt(email);
     const request = await fetch(API_SRC + "?url=recuperar", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: urlEncode({
-        email: email,
+        data: encrypted,
       }),
     });
     return await request.json();
