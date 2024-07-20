@@ -24,8 +24,10 @@ const Table = ({ navigation }) => {
   ]);
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
+    setLoading(true);
     const res = await fetch(
       API_SRC + "?url=productoDanado&mostrar=&bitacora=",
       {
@@ -35,6 +37,7 @@ const Table = ({ navigation }) => {
       }
     );
     const res_json = await res.json();
+    setLoading(false);
     if (res_json != null) {
       setData(res_json);
       setOriginalData(res_json);
@@ -143,6 +146,10 @@ const Table = ({ navigation }) => {
               <DataTable.Cell>{item.fecha}</DataTable.Cell>
             </DataTable.Row>
           ))
+        ) : loading ? (
+          <View className="p-2">
+            <ActivityIndicator animating={true} />
+          </View>
         ) : (
           <Text className="m-auto py-5 drop-shadow-md">
             No se encontró información...

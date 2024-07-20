@@ -3,7 +3,7 @@ import { Divider, Searchbar, Text } from "react-native-paper";
 import { useCheckSession } from "../hooks/useCheckSession";
 import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
-import { DataTable } from "react-native-paper";
+import { ActivityIndicator, DataTable } from "react-native-paper";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { CustomModal } from "../components/Modal";
@@ -24,8 +24,10 @@ const Table = () => {
   ]);
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
+    setLoading(true);
     const res = await fetch(
       API_SRC + "?url=historialInventario&mostrar=&bitacora=",
       {
@@ -35,6 +37,7 @@ const Table = () => {
       }
     );
     const res_json = await res.json();
+    setLoading(false);
     if (res_json != null) {
       console.log(res_json[0]);
       setData(res_json);
@@ -161,6 +164,10 @@ const Table = () => {
               <DataTable.Cell>{item.nombre_sede}</DataTable.Cell>
             </DataTable.Row>
           ))
+        ) : loading ? (
+          <View className="p-2">
+            <ActivityIndicator animating={true} />
+          </View>
         ) : (
           <Text className="m-auto py-5 drop-shadow-md">
             No se encontró información...

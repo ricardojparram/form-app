@@ -3,7 +3,7 @@ import { Divider, Searchbar, Text } from "react-native-paper";
 import { useCheckSession } from "../hooks/useCheckSession";
 import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
-import { DataTable } from "react-native-paper";
+import { DataTable, ActivityIndicator } from "react-native-paper";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { CustomModal } from "../components/Modal";
@@ -25,8 +25,10 @@ const Table = () => {
 
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
+    setLoading(true);
     const res = await fetch(
       API_SRC + "?url=personal&mostrar=xd&bitacora=true",
       {
@@ -36,6 +38,7 @@ const Table = () => {
       }
     );
     const res_json = await res.json();
+    setLoading(false);
     if (res_json != null) {
       setData(res_json);
       setOriginalData(res_json);
@@ -58,7 +61,8 @@ const Table = () => {
   }, [itemsPerPage]);
 
   const [sortDirectionName, setSortDirectionName] = useState("descending");
-  const [sortDirectionLastName, setSortDirectionLastName] = useState("descending");
+  const [sortDirectionLastName, setSortDirectionLastName] =
+    useState("descending");
   const [sortDirectionId, setSortDirectionId] = useState("descending");
 
   const toggleName = () => {
@@ -87,7 +91,7 @@ const Table = () => {
 
   const toggleLastName = () => {
     const newDirection =
-    sortDirectionLastName === "descending" ? "ascending" : "descending";
+      sortDirectionLastName === "descending" ? "ascending" : "descending";
     const sortedData = [...data].sort((a, b) =>
       newDirection === "ascending"
         ? a?.apellidos.localeCompare(b?.apellidos)
@@ -121,20 +125,20 @@ const Table = () => {
       />
       <DataTable>
         <DataTable.Header>
-          <DataTable.Title
-            sortDirection={sortDirectionId}
-            onPress={toggleId}
-          >N° Documento
+          <DataTable.Title sortDirection={sortDirectionId} onPress={toggleId}>
+            N° Documento
           </DataTable.Title>
           <DataTable.Title
             sortDirection={sortDirectionName}
             onPress={toggleName}
-          >Nombre
+          >
+            Nombre
           </DataTable.Title>
           <DataTable.Title
             sortDirection={sortDirectionLastName}
             onPress={toggleLastName}
-          >Apellido
+          >
+            Apellido
           </DataTable.Title>
         </DataTable.Header>
         {data.length >= 1 ? (
@@ -148,6 +152,10 @@ const Table = () => {
               <DataTable.Cell>{item.apellidos}</DataTable.Cell>
             </DataTable.Row>
           ))
+        ) : loading ? (
+          <View className="p-2">
+            <ActivityIndicator animating={true} />
+          </View>
         ) : (
           <Text className="m-auto py-5 drop-shadow-md">
             No se encontró información...
@@ -165,49 +173,48 @@ const Table = () => {
           selectPageDropdownLabel={"Filas por pagina"}
         />
         <CustomModal
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        title={modalData?.nombres+" "+modalData?.apellidos}
-      >
-        <View className="pr-4 text-md flex gap-y-2">
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Cedula: </Text>
-            <Text className="">{modalData?.cedula}</Text>
+          visible={visible}
+          onDismiss={() => setVisible(false)}
+          title={modalData?.nombres + " " + modalData?.apellidos}
+        >
+          <View className="pr-4 text-md flex gap-y-2">
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Cedula: </Text>
+              <Text className="">{modalData?.cedula}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Direccion: </Text>
+              <Text className="">{modalData?.direccion}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Edad: </Text>
+              <Text className="">{modalData?.edad}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Telefono: </Text>
+              <Text className="">{modalData?.telefono}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Correo: </Text>
+              <Text className="">{modalData?.correo}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Tipo de Empleado: </Text>
+              <Text className="">{modalData?.tipo}</Text>
+            </View>
+            <Divider />
+            <View className="flex flex-row justify-between ">
+              <Text className="font-bold">Sede: </Text>
+              <Text className="">{modalData?.sede}</Text>
+            </View>
+            <Divider />
           </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Direccion: </Text>
-            <Text className="">{modalData?.direccion}</Text>
-          </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Edad: </Text>
-            <Text className="">{modalData?.edad}</Text>
-          </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Telefono: </Text>
-            <Text className="">{modalData?.telefono}</Text>
-          </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Correo: </Text>
-            <Text className="">{modalData?.correo}</Text>
-          </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Tipo de Empleado: </Text>
-            <Text className="">{modalData?.tipo}</Text>
-          </View>
-          <Divider />
-          <View className="flex flex-row justify-between ">
-            <Text className="font-bold">Sede: </Text>
-            <Text className="">{modalData?.sede}</Text>
-          </View>
-          <Divider />
-        </View>
-      </CustomModal>
-
+        </CustomModal>
       </DataTable>
     </View>
   );

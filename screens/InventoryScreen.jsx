@@ -1,5 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Divider, Searchbar, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Divider,
+  Searchbar,
+  Text,
+} from "react-native-paper";
 import { useCheckSession } from "../hooks/useCheckSession";
 import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
@@ -24,14 +29,17 @@ const Table = () => {
   ]);
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
+    setLoading(true);
     const res = await fetch(API_SRC + "?url=inventario&mostrar=&bitacora=", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     const res_json = await res.json();
+    setLoading(false);
     if (res_json != null) {
       setData(res_json);
       setOriginalData(res_json);
@@ -153,6 +161,10 @@ const Table = () => {
               <DataTable.Cell>{item.fecha_vencimiento}</DataTable.Cell>
             </DataTable.Row>
           ))
+        ) : loading ? (
+          <View className="p-2">
+            <ActivityIndicator animating={true} />
+          </View>
         ) : (
           <Text className="m-auto py-5 drop-shadow-md">
             No se encontró información...
