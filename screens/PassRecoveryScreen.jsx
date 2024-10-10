@@ -7,7 +7,7 @@ import { CustomInput, AnchorText } from "../components/FormInputs";
 import { LogoHeader } from "../components/LogoHeader";
 import { useForm } from "react-hook-form";
 import { useCheckSession } from "../hooks/useCheckSession";
-import { API_SRC, PUBLIC_KEY } from "@env";
+import { API_SRC, PUBLIC_KEY } from "../env";
 import { urlEncode } from "../utils/urlEncode";
 import { JSEncrypt } from "jsencrypt";
 import Alert from "../components/Alert";

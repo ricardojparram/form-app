@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage, devtools } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
-import { API_SRC, PUBLIC_KEY } from "@env";
+import { API_SRC, PUBLIC_KEY } from "../env";
 import { urlEncode } from "../utils/urlEncode";
 import { JSEncrypt } from "jsencrypt";
 
@@ -45,7 +45,7 @@ export const useAuthStore = create(
             console.error("API_SRC no está definido.");
             return;
           }
-          console.log(API_SRC)
+          console.log(API_SRC);
           const request = await fetch(get().API_SRC + "?url=login", {
             method: "POST",
             headers: {

@@ -13,7 +13,7 @@ import { LogoHeader } from "../components/LogoHeader";
 import { useForm } from "react-hook-form";
 import { useAuthStore } from "../store/authStore";
 import { useEffect, useState } from "react";
-import { API_SRC } from "@env";
+import { API_SRC } from "../env";
 import { useCheckSession } from "../hooks/useCheckSession";
 
 export default function LogInScreen({ navigation }) {
@@ -25,7 +25,7 @@ export default function LogInScreen({ navigation }) {
       headerShown: false,
     });
     const fetchSedes = async () => {
-      console.log(API_SRC)
+      console.log(API_SRC, 'login')
       if (!API_SRC) {
         console.error("API_SRC no está definido.");
         return;

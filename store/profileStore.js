@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { urlEncode } from "../utils/urlEncode";
-import { API_SRC, PUBLIC_KEY } from "@env";
+import { API_SRC, PUBLIC_KEY } from "../env";
 import { JSEncrypt } from "jsencrypt";
 import { useAuthStore } from "./authStore";
 import * as FileSystem from "expo-file-system";
