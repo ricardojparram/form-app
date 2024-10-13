@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { API_SRC, PUBLIC_KEY } from "../env";
 import { urlEncode } from "../utils/urlEncode";
-import { JSEncrypt } from "jsencrypt";
+import JSEncrypt from "jsencrypt";
 
 export const useAuthStore = create(
   devtools(
