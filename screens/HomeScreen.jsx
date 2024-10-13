@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import InfoCard from "../components/BoxHome";
 import { useCheckSession } from "../hooks/useCheckSession";
 import { useAuthStore } from "../store/authStore";
-import { urlEncode } from "../utils/urlEncode";
 
 export default function HomeScreen({ navigation }) {
   useCheckSession();
