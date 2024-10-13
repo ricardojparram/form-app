@@ -3,8 +3,6 @@ import { urlEncode } from "../utils/urlEncode";
 import { API_SRC, PUBLIC_KEY } from "../env";
 import { JSEncrypt } from "jsencrypt";
 import { useAuthStore } from "./authStore";
-import * as FileSystem from "expo-file-system";
-import ChangePassword from "../screens/ChangePasswordScreen";
 
 export const useProfileStore = create((set, get) => ({
   user: null,
@@ -33,7 +31,7 @@ export const useProfileStore = create((set, get) => ({
     });
 
     const res = await req.json();
-    console.log(res);
+
     if (res.edit.token) {
       const setUserFromToken = useAuthStore.getState().setUserFromToken;
       setUserFromToken(res.edit.token);
