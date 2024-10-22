@@ -38,7 +38,7 @@ const Table = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(await res.text());
+    // console.log(await res.text());
     const res_json = await res.json();
     setLoading(false);
     if (res_json != null) {

@@ -39,7 +39,6 @@ const Table = () => {
     const res_json = await res.json();
     setLoading(false);
     if (res_json != null) {
-      console.log(res_json[0]);
       setData(res_json);
       setOriginalData(res_json);
     }

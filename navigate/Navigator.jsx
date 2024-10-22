@@ -19,7 +19,7 @@ const Drawer = createDrawerNavigator();
 
 export const LoggedInNav = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  console.log("isAuthenticated: " + isAuthenticated);
+  // console.log("isAuthenticated: " + isAuthenticated);
   return (
     <Drawer.Navigator
       initialRouteName="Home"

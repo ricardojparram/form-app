@@ -25,7 +25,7 @@ export default function LogInScreen({ navigation }) {
       headerShown: false,
     });
     const fetchSedes = async () => {
-      console.log(API_SRC, 'login')
+      // console.log(API_SRC, 'login')
       if (!API_SRC) {
         console.error("API_SRC no está definido.");
         return;

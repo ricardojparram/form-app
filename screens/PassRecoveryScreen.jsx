@@ -44,7 +44,7 @@ export default function PassRecoveryScreen({ navigation }) {
       loading: true,
     }));
     const res = await sendEmail(data.email);
-    console.log(res);
+    // console.log(res);
     if (res.resultado != "ok") {
       setAlert((state) => ({
         ...state,
