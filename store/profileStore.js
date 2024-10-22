@@ -72,7 +72,7 @@ export const useProfileStore = create((set, get) => ({
       filename: "foto.png",
       type: "image/png",
     });
-    console.log(get().user);
+    // console.log(get().user);
     data.append("cedula", get().user.cedula);
     data.append("nombre", get().user.nombre);
     data.append("apellido", get().user.apellido);
@@ -86,7 +86,6 @@ export const useProfileStore = create((set, get) => ({
     });
 
     const res = await req.json();
-    console.log(res);
     if (res.edit.token) {
       const setUserFromToken = useAuthStore.getState().setUserFromToken;
       setUserFromToken(res.edit.token);

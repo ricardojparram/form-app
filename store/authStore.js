@@ -45,7 +45,6 @@ export const useAuthStore = create(
             console.error("API_SRC no está definido.");
             return;
           }
-          console.log(API_SRC);
           const request = await fetch(get().API_SRC + "?url=login", {
             method: "POST",
             headers: {
@@ -71,7 +70,6 @@ export const useAuthStore = create(
 
         checkSession: async function () {
           const token = get().token;
-          console.log("CheckSession: " + token);
           if (!token) {
             set({ token: null, user: null, isAuthenticated: false });
             return false;
