@@ -11,6 +11,7 @@ export default function HomeScreen({ navigation }) {
   const [data, setData] = useState(null);
   const [sales, setDataSale] = useState(null);
   const [buys, setDataBuys] = useState(null);
+  const [donations, setDonations] = useState(null);
 
   const [API_SRC, token] = useAuthStore((state) => [
     state.API_SRC,
@@ -19,33 +20,69 @@ export default function HomeScreen({ navigation }) {
 
   const getData = async () => {
     try {
-      const res = await fetch(API_SRC + "?url=home&cliente", {
+      const resumen = await fetch(API_SRC + "?url=home&cliente", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      const res_1 = await fetch(API_SRC + "?url=home&resumen=venta&fecha=dia", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+      }).then((res) => res.json());
+      const ventas = await fetch(
+        API_SRC + "?url=home&resumen=venta&fecha=dia",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      ).then((res) => res.json());
 
-      const res_2 = await fetch(API_SRC + "?url=home&resumen=compra&fecha=dia", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        compras: "lalo",
-        opcionC: "hoy",
-      })
+      const compras = await fetch(
+        API_SRC + "?url=home&resumen=compra&fecha=dia",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      ).then((res) => res.json());
 
-      const res_json = await res.json();
-      const res_json_sale = await res_1.json();
-      const res_json_buys = await res_2.json();
-      setData(res_json);
-      setDataSale(res_json_sale);
-      setDataBuys(res_json_buys);
+      const donaciones_pacientes = await fetch(
+        API_SRC + "?url=home&resumen=donativo_pac&fecha=dia",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      const donaciones_personal = await fetch(
+        API_SRC + "?url=home&resumen=donativo_per&fecha=dia",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      ).then((res) => res.json());
+
+      const donaciones_intituciones = await fetch(
+        API_SRC + "?url=home&resumen=donativo_int&fecha=dia",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      setData(resumen);
+      setDataSale(ventas);
+      setDataBuys(compras);
+      setDonations({
+        personal: donaciones_personal,
+        pacientes: donaciones_pacientes,
+        intituciones: donaciones_intituciones,
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,6 +95,45 @@ export default function HomeScreen({ navigation }) {
   return (
     <ScrollView className="w-full bg-theme-background">
       <SafeAreaView className="flex items-center gap-5">
+        <InfoCard
+          title="Donaciones pacientes |"
+          subtitle="día"
+          iconName="medication-outline"
+          number={
+            donations ? (
+              donations.pacientes.resultado
+            ) : (
+              <ActivityIndicator animating={true} />
+            )
+          }
+        />
+
+        <InfoCard
+          title="Donaciones personal |"
+          subtitle="día"
+          iconName="hand-coin-outline"
+          number={
+            donations ? (
+              donations.personal.resultado
+            ) : (
+              <ActivityIndicator animating={true} />
+            )
+          }
+        />
+
+        <InfoCard
+          title="Donaciones instituciones |"
+          subtitle="día"
+          iconName="office-building-plus"
+          number={
+            donations ? (
+              donations.intituciones.resultado
+            ) : (
+              <ActivityIndicator animating={true} />
+            )
+          }
+        />
+
         <InfoCard
           title="Ventas |"
           subtitle="día"
