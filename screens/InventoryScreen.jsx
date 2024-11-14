@@ -10,7 +10,7 @@ import { useAuthStore } from "../store/authStore";
 import { useState, useEffect } from "react";
 import { DataTable } from "react-native-paper";
 import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, RefreshControl } from "react-native";
 import { CustomModal } from "../components/Modal";
 
 const normalize = (str) => {
@@ -118,7 +118,11 @@ const Table = () => {
   };
 
   return (
-    <View style={{ padding: 10 }}>
+    <ScrollView style={{ padding: 10 }}
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={getData} />
+      }
+    >
       <Searchbar
         className="mx-3"
         placeholder="Buscar..."
@@ -215,7 +219,7 @@ const Table = () => {
           </View>
         </View>
       </CustomModal>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -223,9 +227,7 @@ export default function InventoryScreen() {
   useCheckSession();
   return (
     <SafeAreaView className="flex-1 items-center bg-theme-background">
-      <ScrollView>
-        <Table />
-      </ScrollView>
+      <Table />
     </SafeAreaView>
   );
 }
