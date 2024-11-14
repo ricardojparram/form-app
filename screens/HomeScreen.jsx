@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }
-      );
+      ).then((res) => res.json())
 
       const donaciones_personal = await fetch(
         API_SRC + "?url=home&resumen=donativo_per&fecha=dia",
@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }) {
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }
-      );
+      ).then((res) => res.json())
 
       setData(resumen);
       setDataSale(ventas);
@@ -83,6 +83,7 @@ export default function HomeScreen({ navigation }) {
         pacientes: donaciones_pacientes,
         intituciones: donaciones_intituciones,
       });
+      console.log(donations)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,11 +95,11 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ScrollView className="w-full bg-theme-background">
-      <SafeAreaView className="flex items-center gap-5">
+      <SafeAreaView className="p-5">
         <InfoCard
           title="Donaciones pacientes |"
           subtitle="día"
-          iconName="medication-outline"
+          iconName="gift-outline"
           number={
             donations ? (
               donations.pacientes.resultado
@@ -124,7 +125,7 @@ export default function HomeScreen({ navigation }) {
         <InfoCard
           title="Donaciones instituciones |"
           subtitle="día"
-          iconName="office-building-plus"
+          iconName="office-building"
           number={
             donations ? (
               donations.intituciones.resultado
